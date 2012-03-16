@@ -52,13 +52,8 @@ import gnu.io.*;
 public class SimpleWrite {
     static Enumeration	      portList;
     static CommPortIdentifier portId;
-    String[] messageString = new String[10];
-    messageString[0] = "G90";
-    messageString[1] = "G92X0Y0Z0";
-    messageString[2] = "G21";
-    messageString = "G00Z1.0000";
-    messageString5 = "G00X10Y10Z0";
-    messageString6 = "G01X20Y20Z0";
+    static String[] messageString = new String[10];
+
 
     static SerialPort	      serialPort;
     static OutputStream       outputStream;
@@ -75,15 +70,27 @@ public class SimpleWrite {
     public static void main(String[] args) {
 	boolean portFound = false;
 	String  defaultPort = "COM11";
+	messageString[0] = "G90";
+	messageString[1] = "G92X0Y0Z0";
+	messageString[2] = "G21";
+	messageString[3] = "G00Z1.0000";
+	messageString[4] = "G00X10Y10Z0";
+	messageString[5] = "G01X20Y20Z0";
 	
-	messageString += "" + SimpleWrite.checkSum(messageString) + "\\n";
-	messageString2 += "" + SimpleWrite.checkSum(messageString2) + "\\n";
-	messageString3 += "" + SimpleWrite.checkSum(messageString3) + "\\n";
-	messageString4 += "" + SimpleWrite.checkSum(messageString4) + "\\n";
-	messageString5 += "" + SimpleWrite.checkSum(messageString5) + "\\n";
-	messageString6 += "" + SimpleWrite.checkSum(messageString6) + "\\n";
+	messageString[0] += "" + SimpleWrite.checkSum(messageString[0]) + "\\n";
+	messageString[1] += "" + SimpleWrite.checkSum(messageString[1]) + "\\n";
+	messageString[2] += "" + SimpleWrite.checkSum(messageString[2]) + "\\n";
+	messageString[3] += "" + SimpleWrite.checkSum(messageString[3]) + "\\n";
+	messageString[4] += "" + SimpleWrite.checkSum(messageString[4]) + "\\n";
+	messageString[5] += "" + SimpleWrite.checkSum(messageString[5]) + "\\n";
 	
-	System.out.println(messageString + messageString2 + messageString3 + messageString4 + messageString5 + messageString6);
+	
+	for(int i = 0; i < messageString.length; i++) {
+	    messageString[i] = "N" + i + messageString[i] + SimpleWrite.checkSum(messageString[i]) + "\\n";
+	}
+	
+	System.out.println(messageString[0] + messageString[1] + messageString[2] + messageString[3] + messageString[4] + messageString[5]);
+
 	
 	if (args.length > 0) {
 	    defaultPort = args[0];
@@ -122,7 +129,7 @@ public class SimpleWrite {
 		    } catch (IOException e) {}
 
 		    try {
-			serialPort.setSerialPortParams(19200, 
+			serialPort.setSerialPortParams(115200, 
 						       SerialPort.DATABITS_8, 
 						       SerialPort.STOPBITS_1, 
 						       SerialPort.PARITY_NONE);
@@ -159,75 +166,26 @@ public class SimpleWrite {
 		    	"Writing \""+messageString+"\" to "
 			+serialPort.getName());
 
-		    try {
-			outputStream.write(messageString.getBytes());
-			outputStream.flush();
-			String stringread = "";
-			int bit;
-//			while ( (bit = System.in.read()) > -1  )
-//			{
-//			    stringread += bit;
-//			    System.out.println(stringread);
-//			} 
-//			System.out.println(stringread);
-			
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing \""+messageString2+"\" to "
-			+serialPort.getName());
-		    try {
-			outputStream.write(messageString2.getBytes());
-			outputStream.flush();
-			SimpleWrite.wait(1);
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing \""+messageString3+"\" to "
-			+serialPort.getName());
-		    try {
-			outputStream.write(messageString3.getBytes());
-			outputStream.flush();
-			SimpleWrite.wait(1);
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing \""+messageString4+"\" to "
-			+serialPort.getName());
-		    try {
-			outputStream.write(messageString4.getBytes());
-			outputStream.flush();
-			SimpleWrite.wait(1);
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing \""+messageString5+"\" to "
-			+serialPort.getName());
-		    try {
-			outputStream.write(messageString5.getBytes());
-			outputStream.flush();
-			SimpleWrite.wait(1);
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing \""+messageString6+"\" to "
-			+serialPort.getName());
-		    try {
-			outputStream.write(messageString6.getBytes());
-			outputStream.flush();
-			SimpleWrite.wait(1);
-			
-		    } catch (IOException e) {}
-		    System.out.println(
-		    	"Writing to "
-			+serialPort.getName() + "done");
-		   
-		    try {
-		       Thread.sleep(2000);  // Be sure data is xferred before closing
-		    } catch (Exception e) {}
-		    serialPort.close();
-		    System.exit(1);
-		}
+		    for(int i = 0; i < messageString.length; i++ ){
+			try {
+			    outputStream.write(messageString[i].getBytes());
+			    outputStream.flush();
+			    String stringread = "";
+			    int bit;
+			    while ( (bit = System.in.read()) > -1  )
+			    {
+				stringread += bit;
+				System.out.println(stringread);
+			    } 
+			    System.out.println(stringread);
+
+
+			} catch (IOException e) {}
+			System.out.println(
+			    "Writing \""+messageString[i]+"\" to "
+			    +serialPort.getName());
+		    }
+	    	}
 	    } 
 	} 
 
