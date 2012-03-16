@@ -1,0 +1,20 @@
+aanmaken
+cd C:\...\GIT
+git init
+git add .
+git remote add 3dminicnc https://3dminicnc@bitbucket.org/3dminicnc/cnc.git
+git commit -a -m "Een tekstje over wat er precies veranderd is aan je project"
+git push 3dminicnc master
+
+updates
+git add .
+git commit -a -m "Een tekstje over wat er precies veranderd is aan je project"
+git push 3dminicnc master
+
+
+
+afhalen
+git pull 3dminicnc master
+
+
+https password: Timelab09
