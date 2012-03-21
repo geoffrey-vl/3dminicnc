@@ -39,6 +39,7 @@ public class SimpleWrite {
     private PrintStream serialOutStream = null;
     private SerialPort port;
     private long txLineNumber = 0;
+    private long rxLineNumber = 0;
     private int head, tail;
     private static final int buflen = 10; // No too long, or pause doesn't work well
     private String[] ringBuffer;
@@ -235,8 +236,8 @@ public class SimpleWrite {
 
 	while (portList.hasMoreElements()) {
 	    portId = (CommPortIdentifier) portList.nextElement();
-	    System.out.println(CommPortIdentifier.PORT_SERIAL);
-	    System.out.println(portId.getPortType());
+	    //System.out.println(CommPortIdentifier.PORT_SERIAL);
+	    //System.out.println(portId.getPortType());
 	    System.out.println(portId.getName());
 	    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 
@@ -252,8 +253,9 @@ public class SimpleWrite {
                         System.out.println("port socket created");
 		    } catch (PortInUseException e) {
 			System.out.println("Port in use.");
+                        closeConnection();
 
-			continue;
+			//continue;
 		    }  
                     
                     
@@ -262,7 +264,10 @@ public class SimpleWrite {
 			outputStream = serialPort.getOutputStream();
                         serialInStream = serialPort.getInputStream();
                         System.out.println("RX TX streams created");
-		    } catch (IOException e) {}
+		    } catch (IOException e) {
+                        System.out.println("Error creating streams");
+                        closeConnection();
+                    }
                     
                     
                     //start thread which listens for receiving (RX) data
@@ -277,7 +282,10 @@ public class SimpleWrite {
 						       SerialPort.STOPBITS_1, 
 						       SerialPort.PARITY_NONE);
                         System.out.println("port params set");
-		    } catch (UnsupportedCommOperationException e) {}
+		    } catch (UnsupportedCommOperationException e) {
+                        System.out.println("Port params could not be set.");
+                        closeConnection();
+                    } 
 	
                     
                     // Wait for baud rate change to take effect
@@ -320,6 +328,13 @@ public class SimpleWrite {
 	if (!portFound) {
 	    System.out.println("port " + defaultPort + " not found.");
 	} 
+    }
+    
+    
+    
+    public static void incRxCounter(String ack) {
+        //rxLineNumber++;
+        System.out.println("3D MINI CNC: " + ack);
     }
     
     
