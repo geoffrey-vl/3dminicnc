@@ -19,6 +19,8 @@ public class ReadThread implements Runnable {
     
     private Method m1 = null;                       //method from SimpleWrite to call on received data
     
+    private String prevRx = "";
+    
     /**
      * Constructor
      * @param serialInStream 
@@ -62,7 +64,23 @@ public class ReadThread implements Runnable {
                 //convert receiving data to string
                 String rc = new String(readBuffer, 0, availableBytes);
                 
-                //delegate: send received value to SimpleWrite class
+                //what if received words are tearned in small peaces...
+                //hold data in mem until it is long enough
+                if (rc.length()<4) {
+                    //DO NOT SEND, MESSAGE INCOMPLETE
+                    prevRx+=rc;
+                    
+                    //but the previous  received data was also very short -> both together = 1 message
+                    if(prevRx.length()>=4) {
+                        rc = prevRx;
+                    } else {
+                        return;
+                    }
+                }
+                
+                prevRx = "";
+                
+                //delegate: SEND received value to SimpleWrite class
                 try {
                     Object[] args = {rc};
                     m1.invoke(null, args);

@@ -36,19 +36,19 @@ public class SimpleWrite {
     
     private InputStream serialInStream = null;
     private Thread t = null;        //listens for receiving data (see openConnection)
-    private PrintStream serialOutStream = null;
-    private SerialPort port;
+    //private PrintStream serialOutStream = null;
+    //private SerialPort port;
     private long txLineNumber = 0;
-    private long rxLineNumber = 0;
-    private int head, tail;
-    private static final int buflen = 10; // No too long, or pause doesn't work well
-    private String[] ringBuffer;
-    private long[] ringLines;
+    private static long rxLineNumber = 0;
+    //private int head, tail;
+    //private static final int buflen = 10; // No too long, or pause doesn't work well
+    //private String[] ringBuffer;
+    //private long[] ringLines;
     
     
         //for receiving serial data
-    private byte[] buffer = new byte[200];
-    private int bufferpointer=0;
+    //private byte[] buffer = new byte[200];
+    //private int bufferpointer=0;
          
     
     /**
@@ -70,7 +70,7 @@ public class SimpleWrite {
         //sw.sendData(messageString);
          
         //send an array of string
-        //sw.sendData(messagesStrings);
+        sw.sendData(messagesStrings);
 
         //hyperterminal usage
         sw.hyperTerminal();
@@ -89,7 +89,7 @@ public class SimpleWrite {
         boolean loop = true;
         do{
            
-           System.out.println("Geef uw commando: ");
+           System.out.println("Geef uw commando ('stop' to quit): ");
            String cmd = Input.readLine();
            if(cmd.equals("stop")) break;
            this.sendData(cmd);
@@ -127,28 +127,9 @@ public class SimpleWrite {
      * Sends array string data over serial bus
      */
     private void sendData(String[] message) {
-        for(int i=0; i<message.length; i++) {
-            
-            try {
-                //build protocol
-                String cmd = message[i];
-                cmd = "N" + "0" + (i+1) + cmd;
-                cmd = cmd.replaceAll(" ", "");
-                cmd = cmd.trim();
-                cmd += checkSum(cmd);
-                cmd += "\n";
-                
-                //report to console
-                System.out.println("Writing " + i + "/" + message.length + "\t" + cmd + " to " + serialPort.getName());
-                
-                //write to Arduino mega
-                outputStream.write(message[i].getBytes());
-                outputStream.flush();
-            } catch (IOException e) {}
-            
-            try {
-                Thread.sleep(2000);  // Be sure data is xferred before closing
-            } catch (Exception e) {}
+        
+        for(int i=0; i<message.length; i++) { //loop over all lines
+            sendData(message[i]); 
         }
     }
     
@@ -179,7 +160,7 @@ public class SimpleWrite {
         txLineNumber++;
         
         try {
-           Thread.sleep(2000);  // Be sure data is xferred before closing
+           Thread.sleep(3000);  // Be sure data is xferred before closing
         } catch (Exception e) {} 
     }
     
@@ -332,9 +313,16 @@ public class SimpleWrite {
     
     
     
-    public static void incRxCounter(String ack) {
-        //rxLineNumber++;
-        System.out.println("3D MINI CNC: " + ack);
+    public static void incRxCounter(String rc) {
+        System.out.println("3D MINI CNC: " + rc);
+        
+        
+        if(rc.contains("ok")) {
+            rxLineNumber++;
+            System.out.println("CONFIRMED: " + rxLineNumber);
+        } else {
+            //do nothing
+        }
     }
     
     
