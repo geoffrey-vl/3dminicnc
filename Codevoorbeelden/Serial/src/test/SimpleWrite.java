@@ -33,7 +33,7 @@ public class SimpleWrite {
     static OutputStream       outputStream;
     static boolean	      outputBufferEmptyFlag = false;
     
-    
+    private static boolean enableSend = true;
     private InputStream serialInStream = null;
     private Thread t = null;        //listens for receiving data (see openConnection)
     //private PrintStream serialOutStream = null;
@@ -88,7 +88,6 @@ public class SimpleWrite {
     private void hyperTerminal() {
         boolean loop = true;
         do{
-           
            System.out.println("Geef uw commando ('stop' to quit): ");
            String cmd = Input.readLine();
            if(cmd.equals("stop")) break;
@@ -127,10 +126,31 @@ public class SimpleWrite {
      * Sends array string data over serial bus
      */
     private void sendData(String[] message) {
-        
+        //get current time, needed for measuring the time needed for transmitting data
+        Date timer = new Date();
+        long startTime = timer.getTime();
+ 
         for(int i=0; i<message.length; i++) { //loop over all lines
-            sendData(message[i]); 
+            
+            while(true){
+                //try send
+                if(i == rxLineNumber) {
+                    sendData(message[i]); 
+                    break; 
+                }
+                //if not allowed, wait a while and try again in next while-loop
+                else {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }//end while           
         }
+        
+        long endTime = timer.getTime() - startTime;
+        System.out.println("Total time needed: " + endTime + " seconds");
     }
     
     
@@ -140,28 +160,33 @@ public class SimpleWrite {
      * Sends single string data over serial bus
      */
     private void sendData(String message) {
-        //build protocol string
-        String cmd = message;
-        cmd = "N" + txLineNumber + cmd;
-        cmd = cmd.replaceAll(" ", "");
-        cmd = cmd.trim();
-        cmd += checkSum(cmd);
-        cmd += "\n";
-        
-        //report to console
-        System.out.println("Writing \t" + cmd + "\t to " + serialPort.getName());
-        
-        try {
-            //write to serial
-            outputStream.write(cmd.getBytes());
-            outputStream.flush();
-        } catch (IOException e) {}
 
-        txLineNumber++;
-        
-        try {
-           Thread.sleep(3000);  // Be sure data is xferred before closing
-        } catch (Exception e) {} 
+            //build protocol string
+            String cmd = message;
+            if(cmd.contains("G00") || cmd.contains("G01")) cmd+="F100";    //set feedrate to 100
+            cmd = "N" + txLineNumber + cmd;
+            cmd = cmd.replaceAll(" ", "");
+            cmd = cmd.trim();
+            cmd += checkSum(cmd);
+            cmd += "\n";
+
+            //report to console
+            System.out.println("Writing \t" + cmd + "\t to " + serialPort.getName());
+
+            try {
+                //write to serial
+                outputStream.write(cmd.getBytes());
+                outputStream.flush();
+            } catch (IOException e) {}
+
+            txLineNumber++;
+
+
+            try {
+               Thread.sleep(256);  // Be sure data is xferred before closing
+            } catch (Exception e) {} 
+
+            return;    // message has been send
     }
     
     
@@ -315,7 +340,7 @@ public class SimpleWrite {
     
     public static void incRxCounter(String rc) {
         System.out.println("3D MINI CNC: " + rc);
-        
+        enableSend = true;
         
         if(rc.contains("ok")) {
             rxLineNumber++;
@@ -334,8 +359,20 @@ public class SimpleWrite {
      */
     private void closeConnection() {
         System.out.println("Closing connection...");
+        
+        //close streams
+        try {
+            outputStream.close();
+            serialInStream.close();
+        } catch (Exception e) {}
+        
+        //close thread
         t.stop();
+        
+        //close serial port
         serialPort.close();
+        
+        //close app
         System.exit(1);
     }
 }//end class
