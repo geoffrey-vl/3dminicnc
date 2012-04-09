@@ -1,21 +1,16 @@
 
-package test;
+package DataLayer;
 
 
 import be.kahosl.ikdoeict.Input;
+import be.kahosl.ikdoeict.TextFile;
 import java.io.*;
 import java.util.*;
 import gnu.io.*;
 
-
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.InputStream;
-
-import be.kahosl.ikdoeict.TextFile;
-
-
-
 
 
 /**
@@ -49,39 +44,30 @@ public class SimpleWrite {
     
         //for receiving serial data
     //private byte[] buffer = new byte[200];
-    //private int bufferpointer=0;
-         
+    //private int bufferpointer=0;   
     
-    /**
-     * MAIN
-     */
-    public static void main(String[] args) {
-	SimpleWrite sw = new SimpleWrite();
-        
-        //open txt file with gcode
-        sw.openFile();
-        
-        //outputs machine code for file red above (no serial comms)
-        //sw.generateMachineCode(messagesStrings);
-        
-        //open serial port
-        sw.openConnection("COM12");
-        
-        //send a single string
-        //sw.sendData(messageString);
-         
-        //send an array of string
-        sw.sendData(messagesStrings);
+    private void startSerial() {
+			//open txt file with gcode
+			openFile();
 
-        //hyperterminal usage
-        sw.hyperTerminal();
-        
-        //close serial connection
-        sw.closeConnection();
-    } 
-    
-    
-    
+			//outputs machine code for file red above (no serial comms)
+			//sw.generateMachineCode(messagesStrings);
+
+			//open serial port
+			openConnection("COM12");
+
+			//send a single string
+			//sw.sendData(messageString);
+
+			//send an array of string
+			sendData(messagesStrings);
+
+			//hyperterminal usage
+			hyperTerminal();
+
+			//close serial connection
+			closeConnection();
+	}
     
     /**
      * Establish a terminal connection to manual give in commands

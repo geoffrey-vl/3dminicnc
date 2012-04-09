@@ -1,30 +1,26 @@
-
-package test;
-
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package DataLayer;
 
 import be.kahosl.ikdoeict.Input;
+import be.kahosl.ikdoeict.TextFile;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
 import java.io.*;
 import java.util.*;
 import gnu.io.*;
 
-
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.InputStream;
-
-import be.kahosl.ikdoeict.TextFile;
-
-
-
-
-
 /**
- * Class declaration
  *
- *
- * @author Geoffrey Van Landeghem
+ * @author Dempsey
  */
-public class SimpleWrite {
+public class IO_Gcode extends IO {
     static Enumeration	      portList;
     static CommPortIdentifier portId;
     static int                BaudRate = 115200;
@@ -49,39 +45,104 @@ public class SimpleWrite {
     
         //for receiving serial data
     //private byte[] buffer = new byte[200];
-    //private int bufferpointer=0;
-         
-    
-    /**
-     * MAIN
-     */
-    public static void main(String[] args) {
-	SimpleWrite sw = new SimpleWrite();
-        
-        //open txt file with gcode
-        sw.openFile();
-        
-        //outputs machine code for file red above (no serial comms)
-        //sw.generateMachineCode(messagesStrings);
-        
-        //open serial port
-        sw.openConnection("COM12");
-        
-        //send a single string
-        //sw.sendData(messageString);
-         
-        //send an array of string
-        sw.sendData(messagesStrings);
+    //private int bufferpointer=0; 
+	
+	public IO_Gcode() {
+	}
+	
+	@Override
+	public ArrayList<String> readCode(String file) {
+		ArrayList<String> list = new ArrayList<String>();
+		String[] lines = null;
+		try {
+			lines = TextFile.readLines("");
+			list.addAll(Arrays.asList(lines));
+		}
+		catch (IOException io) {
+			System.out.println("Error");
+		}
+		
+		return list;
+	}
+	@Override
+	public void writeCode(String file, ArrayList<String> list) {
+		try {
+			for (int i=0; i < list.size(); i++ ) {
+				TextFile.write(file, list.get(i));
+			}	
+		}
+		catch (IOException io) {
+			System.out.println("Error");
+		}
+	}
+	
+	@Override
+	public void sendCommand(String command) {
+		// Code for serial connection to send 1 command
+		try {
+				TextFile.write("test.txt", command);
+		}
+		catch (IOException io) {
+			System.out.println("Error");
+		}
+	}
+	
+	@Override
+	public BufferedImage readImage(String file) {
+		try {
+			File inputFile = new File("");
+			BufferedImage bufferedImage = ImageIO.read(inputFile);
+			int w = bufferedImage.getWidth();
+			int h = bufferedImage.getHeight(null);
 
-        //hyperterminal usage
-        sw.hyperTerminal();
-        
-        //close serial connection
-        sw.closeConnection();
-    } 
-    
-    
-    
+			//Get <strong class="highlight">Pixels</strong>
+			int [] rgbs = new int[w*h];
+			bufferedImage.getRGB(0, 0, w, h, rgbs, 0, w); //Get all <strong class="highlight">pixels</strong>
+			for(int i=0;i<w*h;i++) 
+				 System.out.println("rgbs["+i+"]= "+rgbs[i]);
+			 //when i printed this, I was expecting pixel values 
+			//but I got negative values... :| 
+
+			//Set <strong class="highlight">Pixels</strong>
+			 int rgb = 0xFF00FF00; // green  
+			 for(int j=0;j<10;j++)
+				 for(int k=0;k<10;k++)
+					 bufferedImage.setRGB(j,k, rgb);
+			//Instead of setting the <strong class="highlight">pixels</strong> to green, 
+			//it is instead set to Gray... :confused:
+			 return bufferedImage;
+		}
+		catch (IOException io) {
+			System.out.println("Error");
+			return null;
+		}
+	}
+	
+	/*
+	 * Launch serial connection
+	 */
+    public void startSerial() {
+			//open txt file with gcode
+			openFile();
+
+			//outputs machine code for file red above (no serial comms)
+			//sw.generateMachineCode(messagesStrings);
+
+			//open serial port
+			openConnection("COM12");
+
+			//send a single string
+			//sw.sendData(messageString);
+
+			//send an array of string
+			sendData(messagesStrings);
+
+			//hyperterminal usage
+			hyperTerminal();
+
+			//close serial connection
+			closeConnection();
+	}
     
     /**
      * Establish a terminal connection to manual give in commands
