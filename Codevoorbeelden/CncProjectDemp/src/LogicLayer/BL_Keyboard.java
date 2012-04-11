@@ -5,6 +5,7 @@
 package LogicLayer;
 
 import DataLayer.IO_Gcode;
+import java.awt.image.BufferedImage;
 /**
  *
  * @author Dempsey
@@ -52,5 +53,9 @@ public class BL_Keyboard {
 	
 	public void startConnection() {
 		io.startSerial();
+	}
+	
+	public BufferedImage readImage(String file) {
+		return io.readImage(file);
 	}
 }

@@ -90,7 +90,7 @@ public class IO_Gcode extends IO {
 	@Override
 	public BufferedImage readImage(String file) {
 		try {
-			File inputFile = new File("");
+			File inputFile = new File(file);
 			BufferedImage bufferedImage = ImageIO.read(inputFile);
 			int w = bufferedImage.getWidth();
 			int h = bufferedImage.getHeight(null);

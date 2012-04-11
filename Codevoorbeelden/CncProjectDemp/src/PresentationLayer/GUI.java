@@ -12,6 +12,9 @@ package PresentationLayer;
 
 import LogicLayer.BL_Keyboard;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,6 +47,10 @@ public class GUI extends javax.swing.JFrame {
         jButtonConnect = new javax.swing.JButton();
         jButtonUp = new javax.swing.JButton();
         jButtonDown = new javax.swing.JButton();
+        jButtonLoadImage = new javax.swing.JButton();
+        jLabelImage = new javax.swing.JLabel();
+        jButtonConvert = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -98,6 +105,17 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        jButtonLoadImage.setText("LOAD IMAGE");
+        jButtonLoadImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadImageActionPerformed(evt);
+            }
+        });
+
+        jButtonConvert.setText("CONVERT");
+
+        jLabel1.setText("cm");
+
         jMenu1.setText("File");
 
         jMenuItemOpen.setLabel("Open");
@@ -127,17 +145,29 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jButtonUp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(105, 105, 105))
             .addGroup(layout.createSequentialGroup()
                 .addGap(189, 189, 189)
                 .addComponent(leftButton)
                 .addGap(69, 69, 69)
                 .addComponent(rightButton)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(251, Short.MAX_VALUE)
                 .addComponent(jButtonDown)
-                .addGap(159, 159, 159))
+                .addGap(245, 245, 245))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonLoadImage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
+                .addComponent(jButtonConvert)
+                .addGap(59, 59, 59))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelImage)
+                .addContainerGap(553, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,14 +180,22 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jButtonUp)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(leftButton)
                             .addComponent(rightButton))))
                 .addGap(18, 18, 18)
                 .addComponent(jButtonDown)
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonLoadImage)
+                    .addComponent(jButtonConvert))
+                .addGap(40, 40, 40)
+                .addComponent(jLabelImage)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,6 +225,22 @@ private void jButtonUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 private void jButtonDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDownActionPerformed
 	bl.setCommand("DOWN", this.distance);
 }//GEN-LAST:event_jButtonDownActionPerformed
+
+private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadImageActionPerformed
+	try {
+	  // Simple Read from a file
+	  //File FileToRead = new File("images.jpg");
+	  //Recognize file as image
+	  //Image Picture = ImageIO.read(FileToRead);
+		// Buffered read from file
+		BufferedImage image = bl.readImage("images.jpg");
+	  //Show the image inside the label
+		jLabelImage.setIcon(new ImageIcon(image));
+	} catch (Exception e) {
+	  //Display a message if something goes wrong
+	  JOptionPane.showMessageDialog( null, e.toString() );
+	}
+}//GEN-LAST:event_jButtonLoadImageActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -244,8 +298,12 @@ private void jButtonDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox dropdownDistance;
     private javax.swing.JButton jButtonConnect;
+    private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDown;
+    private javax.swing.JButton jButtonLoadImage;
     private javax.swing.JButton jButtonUp;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelImage;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
