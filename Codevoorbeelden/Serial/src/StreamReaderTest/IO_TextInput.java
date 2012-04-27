@@ -14,10 +14,10 @@ public final class IO_TextInput {
     /** 
      * Read the contents of the given file. 
      */
-    public static ArrayList readFile(String file) {
+    public static ArrayList<String> readFile(String file) {
         
-        ArrayList lines = new ArrayList();
-        StringBuilder text = new StringBuilder();
+        ArrayList<String> lines = new ArrayList<>();
+
         String NL = System.getProperty("line.separator");
         Scanner scanner = null;
         try {

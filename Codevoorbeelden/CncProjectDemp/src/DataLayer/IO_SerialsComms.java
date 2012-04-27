@@ -15,7 +15,7 @@ public class IO_SerialsComms {
     static Enumeration	      portList;
     static CommPortIdentifier portId;
     static int                BaudRate = 115200;
-    static ArrayList           messagesStrings = null;
+    static ArrayList<String>           messagesStrings = null;
     static SerialPort	      serialPort;
     static OutputStream       outputStream;
     static boolean	      outputBufferEmptyFlag = false;
@@ -44,10 +44,7 @@ public class IO_SerialsComms {
      * Sends array string data over serial bus
      * uses this.sendCommand() method
      */
-    public void sendData(ArrayList message) {
-        //get current time, needed for measuring the time needed for transmitting data
-        Date timer = new Date();
-        long startTime = timer.getTime();
+    public void sendData(ArrayList<String> message) {
  
         for(; txTrySendLineNumber<message.size(); txTrySendLineNumber++) { //loop over all lines
             
@@ -67,9 +64,6 @@ public class IO_SerialsComms {
                 }
             }//end while           
         }
-        
-        long endTime = timer.getTime() - startTime;
-        System.out.println("Total time needed: " + endTime + " seconds");
     }
     
     
