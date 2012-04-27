@@ -4,14 +4,14 @@
  */
 package LogicLayer;
 
-import DataLayer.IO_Gcode;
+import DataLayer.IO_SerialsComms;
 import java.awt.image.BufferedImage;
 /**
  *
  * @author Dempsey
  */
 public class BL_Keyboard {
-	private IO_Gcode io;
+	private IO_SerialsComms io;
 	private double xOrigin;
 	private double yOrigin;
 	private double zOrigin;
@@ -22,7 +22,7 @@ public class BL_Keyboard {
 		this.yOrigin = 0;
 		this.zOrigin = 0;
 		this.command = "";
-		this.io = new IO_Gcode();
+		this.io = new IO_SerialsComms();
 	}
 	
 	public void setOrigin(double x, double y, double z) {

@@ -57,7 +57,7 @@ public class SimpleWrite {
 	SimpleWrite sw = new SimpleWrite(); 
         
         //open txt file with gcode
-        sw.openFile("JG.txt");
+        sw.openFile("test.txt");
         
         //outputs machine code for file red above (no serial comms)
         //sw.generateMachineCode(messagesStrings);
@@ -69,7 +69,7 @@ public class SimpleWrite {
         //sw.sendData(messageString);
          
         //send an array of string
-        sw.sendData(messagesStrings);
+        //sw.sendData(messagesStrings);
 
         //hyperterminal usage
         sw.hyperTerminal();
@@ -344,17 +344,21 @@ public class SimpleWrite {
         } 
         
         else if(rc.contains("Resend")) {      //received a resend request
+            
             // retrieve line number from request command
-            int beginIndex = rc.lastIndexOf(":") + 1;
-            int eindIndex = rc.lastIndexOf("\r");
-            String lineNrAsString = rc.substring(beginIndex, eindIndex);
+            int beginIndex = rc.lastIndexOf(":") + 1;   //get index in string where line number begins
+            int eindIndex = rc.lastIndexOf("\r");       //get index in string where line number ends
+            String lineNrAsString = rc.substring(beginIndex, eindIndex);    //get line number
             int lineNr = (int)Integer.parseInt(lineNrAsString);
+            
             //set current line in send data loop
-            rxLineNumber = lineNr-1;
-            txTrySendLineNumber = lineNr;
+            rxLineNumber = lineNr-1;    //this should be the last confirmed line
+            txTrySendLineNumber = lineNr;   //try to send the retrieved line number again
         }
         
-        else {//(rc.contains("start") || rc.contains("") || rc.contains(" ")) {     //received an empty string or startup string
+        else {
+            //(rc.contains("start") || rc.contains("") || rc.contains(" ")) {     
+            //received an empty string or startup string
             //do nothing
         }
     }

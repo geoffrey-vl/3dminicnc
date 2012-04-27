@@ -32,7 +32,7 @@ public class ReadThread implements Runnable {
         //http://www.javacamp.org/javavscsharp/delegate.html
         //http://java.sun.com/developer/technicalArticles/ALT/Reflection/    
         try {  
-            m1 = DataLayer.SimpleWrite.class.getMethod("incRxCounter", new Class[]{String.class});
+            m1 = DataLayer.IO_SerialsComms.class.getMethod("incRxCounter", new Class[]{String.class});
         } catch (NoSuchMethodException | SecurityException noSuchMethodException) {
         }
         
@@ -67,7 +67,7 @@ public class ReadThread implements Runnable {
                 //what if received words are torn appart in small peaces...
                 // -> hold text in mem until next line carriage or next new line character is received
                 rxStringBuffer += rc;
-                while (rxStringBuffer.contains("\n") || rxStringBuffer.contains("\r")) {
+                while (rxStringBuffer.contains("\n")) {
                     int index = rxStringBuffer.indexOf("\n");
                     rc = rxStringBuffer.substring(0, index+1);
                     rxStringBuffer = rxStringBuffer.substring(index+1);
@@ -78,27 +78,11 @@ public class ReadThread implements Runnable {
                         Object[] args = {rc};
                         
                         m1.invoke(null, args);
-                    }catch(Exception e) {}
+                    }
+                    catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        //do nothing
+                    }
                 }
-//                if (rc.length()<4) {
-//                    //DO NOT SEND, MESSAGE INCOMPLETE
-//                    prevRx+=rc;
-//                    
-//                    //but the previous  received data was also very short -> both together = 1 message
-//                    if(prevRx.length()>=4) {
-//                        rc = prevRx;
-//                    } else {
-//                        return;
-//                    }
-//                }
-                
-//                prevRx = "";
-//                
-//                //delegate: SEND received value to SimpleWrite class
-//                try {
-//                    Object[] args = {rc};
-//                    m1.invoke(null, args);
-//                }catch(Exception e) {}
             }
         } catch (IOException e) {
             System.out.println(e.toString());

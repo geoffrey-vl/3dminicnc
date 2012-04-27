@@ -78,7 +78,10 @@ public class ReadThread implements Runnable {
                         Object[] args = {rc};
                         
                         m1.invoke(null, args);
-                    }catch(Exception e) {}
+                    }
+                    catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        //do nothing
+                    }
                 }
 //                if (rc.length()<4) {
 //                    //DO NOT SEND, MESSAGE INCOMPLETE

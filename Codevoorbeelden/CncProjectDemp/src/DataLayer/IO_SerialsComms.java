@@ -1,109 +1,40 @@
-
 package DataLayer;
 
-
-import be.kahosl.ikdoeict.Input;
-import be.kahosl.ikdoeict.TextFile;
 import java.io.*;
 import java.util.*;
 import gnu.io.*;
 
-import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.InputStream;
 
-
 /**
- * Class declaration
  *
- *
- * @author Geoffrey Van Landeghem
+ * @author Dempsey, Geoffrey 
  */
-public class SimpleWrite {
+public class IO_SerialsComms {
     static Enumeration	      portList;
     static CommPortIdentifier portId;
     static int                BaudRate = 115200;
-    static String	      messageString = "G01 X32.7330 Y41.8770 Z-0.1270";
-    static String[]           messagesStrings = null;
+    static ArrayList           messagesStrings = null;
     static SerialPort	      serialPort;
     static OutputStream       outputStream;
     static boolean	      outputBufferEmptyFlag = false;
     
-    private static boolean enableSend = true;
     private InputStream serialInStream = null;
     private Thread t = null;        //listens for receiving data (see openConnection)
-    //private PrintStream serialOutStream = null;
-    //private SerialPort port;
+
     private long txLineNumber = 0;
     private static long rxLineNumber = 0;
-    //private int head, tail;
-    //private static final int buflen = 10; // No too long, or pause doesn't work well
-    //private String[] ringBuffer;
-    //private long[] ringLines;
-    
-    
-        //for receiving serial data
-    //private byte[] buffer = new byte[200];
-    //private int bufferpointer=0;   
-    
-    private void startSerial() {
-			//open txt file with gcode
-			openFile();
-
-			//outputs machine code for file red above (no serial comms)
-			//sw.generateMachineCode(messagesStrings);
-
-			//open serial port
-			openConnection("COM12");
-
-			//send a single string
-			//sw.sendData(messageString);
-
-			//send an array of string
-			sendData(messagesStrings);
-
-			//hyperterminal usage
-			hyperTerminal();
-
-			//close serial connection
-			closeConnection();
-	}
+    private static int txTrySendLineNumber = 0;
+	
     
     /**
-     * Establish a terminal connection to manual give in commands
+     * DEFAULT CONSTRUCTOR
+     * This will do a system check for all available com ports
      */
-    private void hyperTerminal() {
-        boolean loop = true;
-        do{
-           System.out.println("Geef uw commando ('stop' to quit): ");
-           String cmd = Input.readLine();
-           if(cmd.equals("stop")) break;
-           this.sendData(cmd);
-        }while(loop);
-    }
-    
-    
-    
-    
-    
-    /**
-     * generates machine code which you can copy paste into hyperterminal
-     * @param message 
-     */
-    private void generateMachineCode(String[] message) {
-        for(int i=0; i<message.length; i++) {
-            
-                //build protocol
-                String cmd = message[i];
-                cmd = "N" + "0" + (i+1) + cmd;
-                cmd = cmd.replaceAll(" ", "");
-                cmd = cmd.trim();
-                cmd += checkSum(cmd);
-                cmd += "\n";
-                
-                //report to console
-                System.out.println(cmd);
-        }
+    public IO_SerialsComms() {
+        System.out.println("Scanning for serial ports, this may take a while...");
+	portList = CommPortIdentifier.getPortIdentifiers();
     }
     
     
@@ -111,18 +42,19 @@ public class SimpleWrite {
     
     /**
      * Sends array string data over serial bus
+     * uses this.sendCommand() method
      */
-    private void sendData(String[] message) {
+    public void sendData(ArrayList message) {
         //get current time, needed for measuring the time needed for transmitting data
         Date timer = new Date();
         long startTime = timer.getTime();
  
-        for(int i=0; i<message.length; i++) { //loop over all lines
+        for(; txTrySendLineNumber<message.size(); txTrySendLineNumber++) { //loop over all lines
             
             while(true){
                 //try send
-                if(i == rxLineNumber) {
-                    sendData(message[i]); 
+                if(txTrySendLineNumber == rxLineNumber) {
+                    sendCommand((String)message.get(txTrySendLineNumber));
                     break; 
                 }
                 //if not allowed, wait a while and try again in next while-loop
@@ -144,9 +76,9 @@ public class SimpleWrite {
     
     
     /**
-     * Sends single string data over serial bus
+     * Sends single string command over serial bus
      */
-    private void sendData(String message) {
+    public void sendCommand(String message) {
 
             //build protocol string
             String cmd = message;
@@ -173,29 +105,8 @@ public class SimpleWrite {
                Thread.sleep(256);  // Be sure data is xferred before closing
             } catch (Exception e) {} 
 
-            return;    // message has been send
+            // message has been send
     }
-    
-    
-    
-    
-    
-    /**
-     * opens a txt file and stores it in mem
-     */
-    private void openFile() {
-        String s = "A.txt";
-        
-        try {
-            messagesStrings = TextFile.readLines(s);
-        } catch(Exception e) {}
-
-        for(int i=0; i<messagesStrings.length; i++) {
-            System.out.println("added line " + i + ": " + messagesStrings[i]);
-        }
-        
-    }
-    
     
     
     
@@ -220,22 +131,18 @@ public class SimpleWrite {
     /**
      * open a serial conection
      */
-    private void openConnection(String  defaultPort) {
+    public void openConnection(String selectedPort) {
         txLineNumber = 1;
         boolean portFound = false;
 
-        System.out.println("Scanning for serial ports, this may take a while...");
-	portList = CommPortIdentifier.getPortIdentifiers();
-
 	while (portList.hasMoreElements()) {
 	    portId = (CommPortIdentifier) portList.nextElement();
-	    //System.out.println(CommPortIdentifier.PORT_SERIAL);
-	    //System.out.println(portId.getPortType());
+
 	    System.out.println(portId.getName());
 	    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 
-		if (portId.getName().equals(defaultPort)) {
-		    System.out.println("Found port " + defaultPort);
+		if (portId.getName().equals(selectedPort)) {
+		    System.out.println("Found port " + selectedPort);
 
 		    portFound = true;
 
@@ -300,14 +207,6 @@ public class SimpleWrite {
                     } catch (Exception e) {
                             // Um, Linux USB ports don't do this. What can I do about it?
                     }
-
-                    
-                    //following throws exceptions!!
-//                    try {
-//			port.enableReceiveTimeout(1);
-//                    } catch (UnsupportedCommOperationException e) {
-//                            //Debug.d("Read timeouts unsupported on this platform");
-//                    }
                     
                     // Wait for baud rate change to take effect
                     try {Thread.sleep(3000);} catch (Exception e) {}
@@ -319,20 +218,42 @@ public class SimpleWrite {
 	} 
 
 	if (!portFound) {
-	    System.out.println("port " + defaultPort + " not found.");
+	    System.out.println("port " + selectedPort + " not found.");
 	} 
     }
     
     
     
-    public static void incRxCounter(String rc) {
+    
+    /**
+     * This method is called from the Receiving thread and if it received an 'ok'
+     * the program will advance to try send the next command
+     * @param the string received from the RX Thread
+     */
+     public static void incRxCounter(String rc) {
         System.out.println("3D MINI CNC: " + rc);
-        enableSend = true;
         
-        if(rc.contains("ok")) {
+        if(rc.contains("ok")) {         //received an OK
             rxLineNumber++;
             System.out.println("CONFIRMED: " + rxLineNumber);
-        } else {
+        } 
+        
+        else if(rc.contains("Resend")) {      //received a resend request
+            
+            // retrieve line number from request command
+            int beginIndex = rc.lastIndexOf(":") + 1;   //get index in string where line number begins
+            int eindIndex = rc.lastIndexOf("\r");       //get index in string where line number ends
+            String lineNrAsString = rc.substring(beginIndex, eindIndex);    //get line number
+            int lineNr = (int)Integer.parseInt(lineNrAsString);
+            
+            //set current line in send data loop
+            rxLineNumber = lineNr-1;    //this should be the last confirmed line
+            txTrySendLineNumber = lineNr;   //try to send the retrieved line number again
+        }
+        
+        else {
+            //(rc.contains("start") || rc.contains("") || rc.contains(" ")) {     
+            //received an empty string or startup string
             //do nothing
         }
     }

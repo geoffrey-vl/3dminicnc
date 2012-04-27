@@ -1,0 +1,16 @@
+Verslag vergadering 2
+---------------------
+
+Seriele verbinding werkt, ook als er sneller commando's gestuurd worden. Dit 
+was vroeger een probleem.Nu moet er enkel nog voor gezorgd worden dat er errorhandling is, 
+als de microcontroller een fout opwerpt. (Geoffrey)
+
+Dempsey heeft een basis-programmastructuur uitgewerkt. Daarmee kunnen we ook 
+al de frees aansturen, stap per stap (met pijltjes).
+
+Jens heeft al een basis voor een algoritme en zal dit verder uitwerken.
+
+Een idee van Mr. Sanders was om de thread te laten slapen op bepaalde punten, 
+omdat de seriele verbinding de cpu volledig belast. Daar zal worden naar gekeken.
+
+Op de opendeurdag zullen we normaal al iets kunnen tonen.
