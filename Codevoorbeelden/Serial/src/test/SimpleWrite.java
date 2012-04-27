@@ -7,8 +7,6 @@ import java.io.*;
 import java.util.*;
 import gnu.io.*;
 
-
-import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.InputStream;
 
@@ -34,13 +32,13 @@ public class SimpleWrite {
     static OutputStream       outputStream;
     static boolean	      outputBufferEmptyFlag = false;
     
-    private static boolean enableSend = true;
     private InputStream serialInStream = null;
     private Thread t = null;        //listens for receiving data (see openConnection)
     //private PrintStream serialOutStream = null;
     //private SerialPort port;
     private long txLineNumber = 0;
     private static long rxLineNumber = 0;
+    private static int txTrySendLineNumber = 0;
     //private int head, tail;
     //private static final int buflen = 10; // No too long, or pause doesn't work well
     //private String[] ringBuffer;
@@ -56,10 +54,10 @@ public class SimpleWrite {
      * MAIN
      */
     public static void main(String[] args) {
-	SimpleWrite sw = new SimpleWrite();
+	SimpleWrite sw = new SimpleWrite(); 
         
         //open txt file with gcode
-        sw.openFile();
+        sw.openFile("JG.txt");
         
         //outputs machine code for file red above (no serial comms)
         //sw.generateMachineCode(messagesStrings);
@@ -131,12 +129,12 @@ public class SimpleWrite {
         Date timer = new Date();
         long startTime = timer.getTime();
  
-        for(int i=0; i<message.length; i++) { //loop over all lines
+        for(; txTrySendLineNumber<message.length; txTrySendLineNumber++) { //loop over all lines
             
             while(true){
                 //try send
-                if(i == rxLineNumber) {
-                    sendData(message[i]); 
+                if(txTrySendLineNumber == rxLineNumber) {
+                    sendData(message[txTrySendLineNumber]); 
                     break; 
                 }
                 //if not allowed, wait a while and try again in next while-loop
@@ -197,9 +195,7 @@ public class SimpleWrite {
     /**
      * opens a txt file and stores it in mem
      */
-    private void openFile() {
-        String s = "A.txt";
-        
+    private void openFile(String s) {  
         try {
             messagesStrings = TextFile.readLines(s);
         } catch(Exception e) {}
@@ -341,12 +337,24 @@ public class SimpleWrite {
     
     public static void incRxCounter(String rc) {
         System.out.println("3D MINI CNC: " + rc);
-        enableSend = true;
         
-        if(rc.contains("ok")) {
+        if(rc.contains("ok")) {         //received an OK
             rxLineNumber++;
             System.out.println("CONFIRMED: " + rxLineNumber);
-        } else {
+        } 
+        
+        else if(rc.contains("Resend")) {      //received a resend request
+            // retrieve line number from request command
+            int beginIndex = rc.lastIndexOf(":") + 1;
+            int eindIndex = rc.lastIndexOf("\r");
+            String lineNrAsString = rc.substring(beginIndex, eindIndex);
+            int lineNr = (int)Integer.parseInt(lineNrAsString);
+            //set current line in send data loop
+            rxLineNumber = lineNr-1;
+            txTrySendLineNumber = lineNr;
+        }
+        
+        else {//(rc.contains("start") || rc.contains("") || rc.contains(" ")) {     //received an empty string or startup string
             //do nothing
         }
     }

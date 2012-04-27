@@ -67,7 +67,7 @@ public class ReadThread implements Runnable {
                 //what if received words are torn appart in small peaces...
                 // -> hold text in mem until next line carriage or next new line character is received
                 rxStringBuffer += rc;
-                while (rxStringBuffer.contains("\n") || rxStringBuffer.contains("\r")) {
+                while (rxStringBuffer.contains("\n")) {
                     int index = rxStringBuffer.indexOf("\n");
                     rc = rxStringBuffer.substring(0, index+1);
                     rxStringBuffer = rxStringBuffer.substring(index+1);
