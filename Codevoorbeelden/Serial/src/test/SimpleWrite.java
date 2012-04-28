@@ -39,6 +39,7 @@ public class SimpleWrite {
     private long txLineNumber = 0;
     private static long rxLineNumber = 0;
     private static int txTrySendLineNumber = 0;
+    private String feedrate = "F150";
     //private int head, tail;
     //private static final int buflen = 10; // No too long, or pause doesn't work well
     //private String[] ringBuffer;
@@ -52,12 +53,12 @@ public class SimpleWrite {
     
     /**
      * MAIN
-     */
+     */ 
     public static void main(String[] args) {
 	SimpleWrite sw = new SimpleWrite(); 
         
         //open txt file with gcode
-        sw.openFile("test.txt");
+        sw.openFile("gcodetijger.txt");
         
         //outputs machine code for file red above (no serial comms)
         //sw.generateMachineCode(messagesStrings);
@@ -69,10 +70,10 @@ public class SimpleWrite {
         //sw.sendData(messageString);
          
         //send an array of string
-        //sw.sendData(messagesStrings);
+        sw.sendData(messagesStrings);
 
         //hyperterminal usage
-        sw.hyperTerminal();
+        sw.hyperTerminal(); 
         
         //close serial connection
         sw.closeConnection();
@@ -83,7 +84,7 @@ public class SimpleWrite {
     
     /**
      * Establish a terminal connection to manual give in commands
-     */
+     */ 
     private void hyperTerminal() {
         boolean loop = true;
         do{
@@ -162,7 +163,7 @@ public class SimpleWrite {
 
             //build protocol string
             String cmd = message;
-            if(cmd.contains("G00") || cmd.contains("G01")) cmd+="F100";    //set feedrate to 100
+            if(cmd.contains("G00") || cmd.contains("G01")) cmd+= feedrate;    //set feedrate to 100
             cmd = "N" + txLineNumber + cmd;
             cmd = cmd.replaceAll(" ", "");
             cmd = cmd.trim();
@@ -198,7 +199,9 @@ public class SimpleWrite {
     private void openFile(String s) {  
         try {
             messagesStrings = TextFile.readLines(s);
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            System.out.println("Failed to open file!");
+        }
 
         for(int i=0; i<messagesStrings.length; i++) {
             System.out.println("added line " + i + ": " + messagesStrings[i]);

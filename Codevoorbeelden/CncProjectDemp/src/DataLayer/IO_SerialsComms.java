@@ -26,6 +26,7 @@ public class IO_SerialsComms {
     private long txLineNumber = 0;
     private static long rxLineNumber = 0;
     private static int txTrySendLineNumber = 0;
+    private String feedrate = "F150";
 	
     
     /**
@@ -76,7 +77,7 @@ public class IO_SerialsComms {
 
             //build protocol string
             String cmd = message;
-            if(cmd.contains("G00") || cmd.contains("G01")) cmd+="F100";    //set feedrate to 100
+            if(cmd.contains("G00") || cmd.contains("G01")) cmd+= feedrate;    //set feedrate to 100
             cmd = "N" + txLineNumber + cmd;
             cmd = cmd.replaceAll(" ", "");
             cmd = cmd.trim();
@@ -259,7 +260,7 @@ public class IO_SerialsComms {
     /**
      * closes to existing serial connection
      */
-    private void closeConnection() {
+    public void closeConnection() {
         System.out.println("Closing connection...");
         
         //close streams
