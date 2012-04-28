@@ -6,16 +6,22 @@ package LogicLayer;
 
 import DataLayer.IO_SerialsComms;
 import java.awt.image.BufferedImage;
+import java.util.Enumeration;
 /**
  *
  * @author Dempsey
  */
 public class BL_Keyboard {
+	//private IO_Gcode io;
 	private IO_SerialsComms io;
 	private double xOrigin;
 	private double yOrigin;
 	private double zOrigin;
 	private String command;
+
+	public Enumeration getPortList() {
+		return io.getPortList();
+	}
 	
 	public BL_Keyboard() {
 		this.xOrigin = 0;
@@ -51,11 +57,15 @@ public class BL_Keyboard {
 		io.sendCommand(this.command);		
 	}
 	
-	public void startConnection() {
-		io.startSerial();
+	public void startConnection(String selectedPort) {
+		io.openConnection(selectedPort);
 	}
 	
-	public BufferedImage readImage(String file) {
-		return io.readImage(file);
+	public void sendCommand(String command) {
+		io.sendCommand(command);
 	}
+	
+//	public BufferedImage readImage(String file) {
+//		//return io.readImage(file);
+//	}
 }

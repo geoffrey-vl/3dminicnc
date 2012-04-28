@@ -11,9 +11,17 @@
 package PresentationLayer;
 
 import LogicLayer.BL_Keyboard;
+import LogicLayer.ImageHandler;
+import gnu.io.CommPortIdentifier;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,13 +31,27 @@ import javax.swing.JOptionPane;
 public class GUI extends javax.swing.JFrame {
 	// Business Layer object
 	private BL_Keyboard bl;
+	// Business Layer image handler
+	private ImageHandler ih;
 	// Distance to move the machine head
 	private double distance;
+	// The image that is loaded
+	private BufferedImage bufferedImage;
+	// Enumeration from dataLayer with ports
+	private Enumeration portsList;
+	private static CommPortIdentifier portId;
+	
 	/** Creates new form NewJFrame */
 	public GUI() {
 		initComponents();
 		this.bl = new BL_Keyboard();
 		this.distance = 0.1;
+		this.portsList = bl.getPortList();
+
+		while (this.portsList.hasMoreElements()) {
+			portId = (CommPortIdentifier) this.portsList.nextElement();
+			jComboBoxPorts.addItem(portId.getName());
+		}
 	}
 
 	/** This method is called from within the constructor to
@@ -51,6 +73,7 @@ public class GUI extends javax.swing.JFrame {
         jLabelImage = new javax.swing.JLabel();
         jButtonConvert = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jComboBoxPorts = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -113,6 +136,11 @@ public class GUI extends javax.swing.JFrame {
         });
 
         jButtonConvert.setText("CONVERT");
+        jButtonConvert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConvertActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("cm");
 
@@ -140,34 +168,40 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonConnect)
-                .addGap(164, 164, 164)
-                .addComponent(jButtonUp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(105, 105, 105))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(189, 189, 189)
-                .addComponent(leftButton)
-                .addGap(69, 69, 69)
-                .addComponent(rightButton)
-                .addContainerGap(177, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(251, Short.MAX_VALUE)
-                .addComponent(jButtonDown)
-                .addGap(245, 245, 245))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonLoadImage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
-                .addComponent(jButtonConvert)
-                .addGap(59, 59, 59))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelImage)
-                .addContainerGap(553, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelImage)
+                        .addContainerGap(563, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jButtonConnect)
+                                .addGap(7, 7, 7)
+                                .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonDown)
+                                        .addGap(140, 140, 140))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(76, 76, 76)
+                                            .addComponent(jButtonUp)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                                            .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jLabel1))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(leftButton)
+                                            .addGap(69, 69, 69)
+                                            .addComponent(rightButton)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonLoadImage)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
+                                .addComponent(jButtonConvert)))
+                        .addGap(59, 59, 59))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,26 +211,33 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonConnect)
-                            .addComponent(jButtonUp)))
+                            .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(leftButton)
-                            .addComponent(rightButton))))
-                .addGap(18, 18, 18)
-                .addComponent(jButtonDown)
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(leftButton)
+                                    .addComponent(rightButton))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonDown))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jButtonUp)))))
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonLoadImage)
                     .addComponent(jButtonConvert))
                 .addGap(40, 40, 40)
                 .addComponent(jLabelImage)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
+
+        getAccessibleContext().setAccessibleName("frame1");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -215,7 +256,8 @@ private void dropdownDistanceActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_dropdownDistanceActionPerformed
 
 private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
-	bl.startConnection();
+	System.out.println((String)jComboBoxPorts.getSelectedItem());
+	bl.startConnection((String)jComboBoxPorts.getSelectedItem());
 }//GEN-LAST:event_jButtonConnectActionPerformed
 
 private void jButtonUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpActionPerformed
@@ -227,20 +269,35 @@ private void jButtonDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 }//GEN-LAST:event_jButtonDownActionPerformed
 
 private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadImageActionPerformed
-	try {
-	  // Simple Read from a file
-	  //File FileToRead = new File("images.jpg");
-	  //Recognize file as image
-	  //Image Picture = ImageIO.read(FileToRead);
-		// Buffered read from file
-		BufferedImage image = bl.readImage("images.jpg");
-	  //Show the image inside the label
-		jLabelImage.setIcon(new ImageIcon(image));
-	} catch (Exception e) {
-	  //Display a message if something goes wrong
-	  JOptionPane.showMessageDialog( null, e.toString() );
+	File inputFile = null;
+	JFileChooser fd = new JFileChooser(".");
+	int returnVal = fd.showOpenDialog(null);
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+		inputFile = fd.getSelectedFile();
 	}
+   
+	try {
+		this.bufferedImage = ImageIO.read(inputFile);
+		jLabelImage.setIcon(new ImageIcon(this.bufferedImage));
+	} catch (IOException ex) {
+		//Logger.getLogger(ImageReserveWerkend.class.getName()).log(Level.SEVERE, null, ex);
+		JOptionPane.showMessageDialog( null, ex.toString() );
+	}
+//	try {
+//
+//		// Buffered read from file
+//		BufferedImage image = bl.readImage("images.jpg");
+//	  //Show the image inside the label
+//		jLabelImage.setIcon(new ImageIcon(image));
+//	} catch (Exception e) {
+//	  //Display a message if something goes wrong
+//	  JOptionPane.showMessageDialog( null, e.toString() );
+//	}
 }//GEN-LAST:event_jButtonLoadImageActionPerformed
+
+private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
+	this.ih = new ImageHandler(this.bufferedImage);
+}//GEN-LAST:event_jButtonConvertActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -302,6 +359,7 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
     private javax.swing.JButton jButtonDown;
     private javax.swing.JButton jButtonLoadImage;
     private javax.swing.JButton jButtonUp;
+    private javax.swing.JComboBox jComboBoxPorts;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelImage;
     private javax.swing.JMenu jMenu1;

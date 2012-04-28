@@ -37,6 +37,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
+  <AccessibilityProperties>
+    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="frame1"/>
+  </AccessibilityProperties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -56,40 +59,53 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonConnect" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="164" max="-2" attributes="0"/>
-              <Component id="jButtonUp" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="74" max="32767" attributes="0"/>
-              <Component id="dropdownDistance" min="-2" max="-2" attributes="1"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
-              <Component id="leftButton" min="-2" max="-2" attributes="1"/>
-              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-              <Component id="rightButton" min="-2" max="-2" attributes="2"/>
-              <EmptySpace pref="177" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="251" max="32767" attributes="0"/>
-              <Component id="jButtonDown" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="245" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonLoadImage" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="310" max="32767" attributes="0"/>
-              <Component id="jButtonConvert" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabelImage" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="553" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelImage" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="563" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jButtonConnect" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                              <Component id="jComboBoxPorts" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace pref="105" max="-2" attributes="0"/>
+                                      <Component id="jButtonDown" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="76" pref="76" max="76" attributes="0"/>
+                                          <Component id="jButtonUp" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace pref="117" max="32767" attributes="0"/>
+                                          <Component id="dropdownDistance" min="-2" max="-2" attributes="1"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="leftButton" min="-2" max="-2" attributes="1"/>
+                                          <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="rightButton" min="-2" max="-2" attributes="2"/>
+                                          <EmptySpace pref="115" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jButtonLoadImage" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="310" max="32767" attributes="0"/>
+                              <Component id="jButtonConvert" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -97,28 +113,36 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonConnect" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonUp" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxPorts" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="dropdownDistance" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="leftButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="rightButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="dropdownDistance" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="leftButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rightButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jButtonDown" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="1">
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                              <Component id="jButtonUp" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jButtonDown" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonLoadImage" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -126,7 +150,7 @@
               </Group>
               <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
               <Component id="jLabelImage" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="228" max="32767" attributes="0"/>
+              <EmptySpace pref="230" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -204,10 +228,20 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="CONVERT"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConvertActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="cm"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxPorts">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>
