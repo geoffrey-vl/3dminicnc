@@ -17,7 +17,7 @@ public class ReadThread implements Runnable {
     private byte[] readBuffer = new byte[400];      //data buffer
     private InputStream inStream;                   //serial stream
     
-    private Method m1 = null;                       //method from SimpleWrite to call on received data
+    private Method m1 = null;                       //method from IO_SerialsComms to call on received data
     
     private String rxStringBuffer = "";
     
@@ -77,6 +77,8 @@ public class ReadThread implements Runnable {
                     try {
                         Object[] args = {rc};
                         
+                        //args1: the object invoking
+                        //args2: the method argumets as object array
                         m1.invoke(null, args);
                     }
                     catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

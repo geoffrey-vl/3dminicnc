@@ -26,6 +26,7 @@ public class IO_SerialsComms {
     private long txLineNumber = 0;
     private static long rxLineNumber = 0;
     private static int txTrySendLineNumber = 0;
+    private String feedrate = "F150";
 	
     
     /**
@@ -37,14 +38,38 @@ public class IO_SerialsComms {
 		portList = CommPortIdentifier.getPortIdentifiers();
     }
     
-	/**
-	 * Getter for the portList
-	 * @return comms portList
-	 */
-	public Enumeration getPortList() {
-		return portList;
-	}
+    
+    
+    /**
+     * Gets an enumeration of all found COM-ports
+     * @return comms portList
+     */
+    public Enumeration getPortList() {
+            return portList;
+    }
+
+    
+    /**
+     * Gets the feedrate
+     * @return 
+     */
+    public String getFeedrate() {
+        return feedrate;
+    }
+
+    /**
+     * Sets the feedrate
+     * @param feedrate 
+     */
+    public void setFeedrate(String feedrate) {
+        this.feedrate = feedrate;
+    }
+    
+    
+    
      
+    
+    
     /**
      * Sends array string data over serial bus
      * uses this.sendCommand() method
@@ -81,7 +106,7 @@ public class IO_SerialsComms {
 
             //build protocol string
             String cmd = message;
-            if(cmd.contains("G00") || cmd.contains("G01")) cmd+="F100";    //set feedrate to 100
+            if(cmd.contains("G00") || cmd.contains("G01")) cmd+=feedrate;    //set feedrate to 100
             cmd = "N" + txLineNumber + cmd;
             cmd = cmd.replaceAll(" ", "");
             cmd = cmd.trim();
