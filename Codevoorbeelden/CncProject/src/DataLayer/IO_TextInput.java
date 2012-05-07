@@ -17,7 +17,7 @@ public final class IO_TextInput {
      * @return an ArrayList of strings
      */
     public static ArrayList readFile(String file) {
-        ArrayList<String> lines = new ArrayList<>();  //array list which hold the retrieved data
+        ArrayList<String> lines = new ArrayList<String>();  //array list which hold the retrieved data
         
         String NL = System.getProperty("line.separator");
         Scanner scanner = null;

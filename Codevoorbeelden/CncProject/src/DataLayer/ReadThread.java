@@ -29,7 +29,11 @@ public class ReadThread implements Runnable {
         //http://java.sun.com/developer/technicalArticles/ALT/Reflection/    
         try {  
             m1 = DataLayer.IO_SerialsComms.class.getMethod("incRxCounter", new Class[]{String.class});
-        } catch (NoSuchMethodException | SecurityException noSuchMethodException) {
+        } catch (NoSuchMethodException e) {
+            //do nothing
+        }
+        catch (SecurityException e) {
+            //do nothing
         }
         
     }
@@ -38,6 +42,7 @@ public class ReadThread implements Runnable {
     /**
      * threadstart: from now on this thread will be monitoring RX
      */
+    @Override
     public void run() {
         while(true) { //infinite read loop
             readSerial();
@@ -77,7 +82,13 @@ public class ReadThread implements Runnable {
                         //args2: the method argumets as object array
                         m1.invoke(null, args);
                     }
-                    catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    catch(IllegalAccessException e) {
+                        //do nothing
+                    }
+                    catch(IllegalArgumentException e) {
+                        //ddo nothing
+                    }
+                    catch (InvocationTargetException e) {
                         //do nothing
                     }
                 }
