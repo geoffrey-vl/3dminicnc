@@ -9,7 +9,7 @@ import DataLayer.IO_SerialsComms;
 
 /**
  *
- * @author Dempsey
+ * @author Dempsey, Geoffrey, Jens
  */
 public class Algorithm {
 	private IO_SerialsComms io;

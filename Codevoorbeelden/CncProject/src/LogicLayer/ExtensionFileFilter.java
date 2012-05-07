@@ -3,6 +3,10 @@ package LogicLayer;
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * 
+ * @author Dempsey, Geoffrey, Jens
+ */
 public class ExtensionFileFilter extends FileFilter 
 {
           String description;

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Geoffrey
+ * @author Dempsey, Geoffrey, Jens
  */
 public final class IO_TextInput {
     

@@ -5,28 +5,26 @@
 
 /*
  * NewJFrame.java
- *
+ * 
  * Created on Apr 8, 2012, 4:31:02 PM
  */
 package PresentationLayer;
 
 import LogicLayer.BL_Keyboard;
 import LogicLayer.ImageHandler;
-import gnu.io.CommPortIdentifier;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author Dempsey
+ * @author Dempsey, Geoffrey, Jens
  */
 public class GUI extends javax.swing.JFrame {
 	// Business Layer object
@@ -37,21 +35,20 @@ public class GUI extends javax.swing.JFrame {
 	private double distance;
 	// The image that is loaded
 	private BufferedImage bufferedImage;
-	// Enumeration from dataLayer with ports
-	private Enumeration portsList;
-	private static CommPortIdentifier portId;
+
 	
 	/** Creates new form NewJFrame */
 	public GUI() {
 		initComponents();
 		this.bl = new BL_Keyboard();
 		this.distance = 0.1;
-		this.portsList = bl.getPortList();
-
-		while (this.portsList.hasMoreElements()) {
-			portId = (CommPortIdentifier) this.portsList.nextElement();
-			jComboBoxPorts.addItem(portId.getName());
-		}
+                
+                //get all available ports from business layer and add them to dropdown box
+                ArrayList<String> ports = bl.getPortList();
+                
+                for(int i = 0; i < ports.size(); i++) {
+                    jComboBoxPorts.addItem(ports.get(i));
+                }
 	}
 
 	/** This method is called from within the constructor to

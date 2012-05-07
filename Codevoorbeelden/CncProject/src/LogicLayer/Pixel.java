@@ -6,7 +6,7 @@ package LogicLayer;
 
 /**
  *
- * @author DANIEL
+ * @author Dempsey, Geoffrey, Jens
  */
 public class Pixel {
     int x;

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package DataLayer;
 
 import java.io.IOException;
@@ -11,7 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  *
- * @author Geoffrey Van Landeghem
+ * @author Dempsey, Geoffrey, Jens
  */
 public class ReadThread implements Runnable {
     private byte[] readBuffer = new byte[400];      //data buffer

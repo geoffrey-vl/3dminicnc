@@ -9,13 +9,12 @@ import java.io.InputStream;
 
 /**
  *
- * @author Dempsey, Geoffrey 
+ * @author Dempsey, Geoffrey, Jens
  */
 public class IO_SerialsComms {
-    static Enumeration	      portList;
-    static CommPortIdentifier portId;
-    static int                BaudRate = 115200;
-    static ArrayList<String>           messagesStrings = null;
+    static ArrayList<CommPortIdentifier> portsList;
+    static final int          BaudRate = 115200;
+    static ArrayList<String>  messagesStrings = null;
     static SerialPort	      serialPort;
     static OutputStream       outputStream;
     static boolean	      outputBufferEmptyFlag = false;
@@ -35,19 +34,34 @@ public class IO_SerialsComms {
      */
     public IO_SerialsComms() {
         System.out.println("Scanning for serial ports, this may take a while...");
-        portList = CommPortIdentifier.getPortIdentifiers();
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+        portsList = new ArrayList<CommPortIdentifier>();
+        
+        //keep all available ports in an array (=> Enum is not usefull when looping through it multiple times, gets erased after first read)
+        while (portList.hasMoreElements()) {
+	    portsList.add((CommPortIdentifier) portList.nextElement());
+        }
+        
     }
     
     
     
     /**
-     * Gets an enumeration of all found COM-ports
-     * @return comms portList
+     * Gets an list of all found COM-ports
+     * @return 
      */
-    public Enumeration getPortList() {
-        return portList;
+    public ArrayList<String> getPortList() {
+        ArrayList<String> portsAsString = new ArrayList<String>();
+        
+        //loop through all scanned ports and ad their name to an array
+        for (int i=0; i<portsList.size(); i++) {
+            portsAsString.add(((CommPortIdentifier)portsList.get(i)).getName());
+        }
+        
+        return portsAsString;
     }
 
+    
     
     /**
      * Gets the feedrate
@@ -57,6 +71,7 @@ public class IO_SerialsComms {
         return feedrate;
     }
 
+    
     /**
      * Sets the feedrate
      * @param feedrate 
@@ -153,97 +168,109 @@ public class IO_SerialsComms {
     
     
     /**
-     * open a serial conection
+     * open a serial connection
+     * @param selectedPort 
      */
     public void openConnection(String selectedPort) {
         txLineNumber = 1;
         boolean portFound = false;
-
-	while (portList.hasMoreElements()) {
-	    portId = (CommPortIdentifier) portList.nextElement();
-
-	    System.out.println(portId.getName());
-	    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-
-		if (portId.getName().equals(selectedPort)) {
-		    System.out.println("Found port " + selectedPort);
+         CommPortIdentifier portIds = null;
+         
+        //new code
+        for(int i = 0; i < portsList.size(); i++) {
+            portIds = (CommPortIdentifier) portsList.get(i);
+            if (portIds.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                if (portIds.getName().equals(selectedPort)) {
+                    System.out.println("Found port " + selectedPort);
 
 		    portFound = true;
-
-                    //create port socket
-		    try {
-			serialPort = 
-			    (SerialPort) portId.open("SimpleWrite", 2000);
-                        System.out.println("port socket created");
-		    } catch (PortInUseException e) {
-			System.out.println("Port in use.");
-                        closeConnection();
-
-			//continue;
-		    }  
-                    
-                    
-                    //make TXRX streams
-		    try {
-			outputStream = serialPort.getOutputStream();
-                        serialInStream = serialPort.getInputStream();
-                        System.out.println("RX TX streams created");
-		    } catch (IOException e) {
-                        System.out.println("Error creating streams");
-                        closeConnection();
-                    }
-                    
-                    
-                    //start thread which listens for receiving (RX) data
-                    t = new Thread(new ReadThread(serialInStream));
-                    t.start();
-
-                    
-                    //set parameters for com-port
-		    try {
-			serialPort.setSerialPortParams(BaudRate, 
-						       SerialPort.DATABITS_8, 
-						       SerialPort.STOPBITS_1, 
-						       SerialPort.PARITY_NONE);
-                        System.out.println("port params set");
-		    } catch (UnsupportedCommOperationException e) {
-                        System.out.println("Port params could not be set.");
-                        closeConnection();
-                    } 
-	
-                    
-                    // Wait for baud rate change to take effect
-                    try {Thread.sleep(1000);} catch (Exception e) {}
-
-                    
-		    try {
-		    	serialPort.notifyOnOutputEmpty(true);
-		    } catch (Exception e) {
-			System.out.println("Error setting event notification");
-			System.out.println(e.toString());
-			System.exit(-1);
-		    }                 
-                    
-                    
-                    //Don’t forget to set its flow control
-                    try {
-                            serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
-                    } catch (Exception e) {
-                            // Um, Linux USB ports don't do this. What can I do about it?
-                    }
-                    
-                    // Wait for baud rate change to take effect
-                    try {Thread.sleep(3000);} catch (Exception e) {}
-
-                    
-                    System.out.println("Ready for use!\r\n");
-		} 
-	    } 
-	} 
-
+                }
+            }
+        }
+        
 	if (!portFound) {
 	    System.out.println("port " + selectedPort + " not found.");
+            return;
 	} 
+        
+        this.createConnectionStreams(portIds);
+    }
+    
+    
+    
+    /**
+     * Opens the selected IO port and creates Serial read/write streams
+     * WARNING: ports must excist!
+     * @param portId 
+     */
+    private void createConnectionStreams(CommPortIdentifier portId) {
+        //create port socket
+        try {
+            serialPort = 
+                (SerialPort) portId.open("IO_SerialsComms", 2000);
+            System.out.println("port socket created");
+        } catch (PortInUseException e) {
+            System.out.println("Port in use.");
+            closeConnection();
+
+            //continue;
+        }  
+
+
+        //make TXRX streams
+        try {
+            outputStream = serialPort.getOutputStream();
+            serialInStream = serialPort.getInputStream();
+            System.out.println("RX TX streams created");
+        } catch (IOException e) {
+            System.out.println("Error creating streams");
+            closeConnection();
+        }
+
+
+        //start thread which listens for receiving (RX) data
+        t = new Thread(new ReadThread(serialInStream));
+        t.start();
+
+
+        //set parameters for com-port
+        try {
+            serialPort.setSerialPortParams(BaudRate, 
+                                           SerialPort.DATABITS_8, 
+                                           SerialPort.STOPBITS_1, 
+                                           SerialPort.PARITY_NONE);
+            System.out.println("port params set");
+        } catch (UnsupportedCommOperationException e) {
+            System.out.println("Port params could not be set.");
+            closeConnection();
+        } 
+
+
+        // Wait for baud rate change to take effect
+        try {Thread.sleep(1000);} catch (Exception e) {}
+
+
+        try {
+            serialPort.notifyOnOutputEmpty(true);
+        } catch (Exception e) {
+            System.out.println("Error setting event notification");
+            System.out.println(e.toString());
+            System.exit(-1);
+        }                 
+
+
+        //Don’t forget to set its flow control
+        try {
+                serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
+        } catch (Exception e) {
+                // Um, Linux USB ports don't do this. What can I do about it?
+        }
+
+        // Wait for baud rate change to take effect
+        try {Thread.sleep(3000);} catch (Exception e) {}
+
+
+        System.out.println("Ready for use!\r\n");
     }
     
     

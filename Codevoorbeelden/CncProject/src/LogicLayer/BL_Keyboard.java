@@ -6,10 +6,10 @@ package LogicLayer;
 
 import DataLayer.IO_SerialsComms;
 import java.awt.image.BufferedImage;
-import java.util.Enumeration;
+import java.util.ArrayList;
 /**
  *
- * @author Dempsey
+ * @author Dempsey, Geoffrey, Jens
  */
 public class BL_Keyboard {
 	//private IO_Gcode io;
@@ -19,7 +19,7 @@ public class BL_Keyboard {
 	private double zOrigin;
 	private String command;
 
-	public Enumeration getPortList() {
+	public ArrayList<String> getPortList() {
 		return io.getPortList();
 	}
 	

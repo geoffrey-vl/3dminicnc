@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author Dempsey
+ * @author Dempsey, Geoffrey, Jens
  */
 public class ImageHandler {
 	private BufferedImage bufferedImage;
