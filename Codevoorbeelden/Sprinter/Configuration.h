@@ -70,8 +70,8 @@ const bool DISABLE_Z = true;
 const bool DISABLE_E = false;
 
 // Inverting axis direction
-const bool INVERT_X_DIR = true;
-const bool INVERT_Y_DIR = true;
+const bool INVERT_X_DIR = false;
+const bool INVERT_Y_DIR = false;
 const bool INVERT_Z_DIR = true;
 const bool INVERT_E_DIR = false;
 
@@ -91,7 +91,7 @@ const int Z_MAX_LENGTH = 150;
 const int NUM_AXIS = 4; // The axis order in all axis related arrays is X, Y, Z, E
 //float max_feedrate[] = {200000, 200000, 240, 500000};
 float max_feedrate[] = {1000, 1000, 150, 500000};
-float homing_feedrate[] = {1500,1500,150};
+float homing_feedrate[] = {150,150,150};
 bool axis_relative_modes[] = {false, false, false, false};
 
 // Min step delay in microseconds. If you are experiencing missing steps, try to raise the delay microseconds, but be aware this
