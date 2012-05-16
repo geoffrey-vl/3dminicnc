@@ -41,16 +41,22 @@ public class BL_Keyboard {
 	
 	public void setCommand(String s, double factor) {
 		if (s.equals("UP")) {
-			this.yOrigin += factor;
+			this.yOrigin += factor*10;
 		}
 		else if (s.equals("DOWN")) {
-			this.yOrigin -= factor;
+			this.yOrigin -= factor*10;
 		}
 		else if (s.equals("LEFT")) {
-			this.xOrigin -= factor;
+			this.xOrigin -= factor*10;
 		}
 		else if (s.equals("RIGHT")) {
-			this.xOrigin += factor;
+			this.xOrigin += factor*10;
+		}
+		else if (s.equals("ZUP")) {
+			this.zOrigin -= factor*10;
+		}
+		else if (s.equals("ZDOWN")) {
+			this.zOrigin += factor*10;
 		}
 		
 		this.command = "G01 X" + this.xOrigin + " Y" + this.yOrigin + " Z" + this.zOrigin;
