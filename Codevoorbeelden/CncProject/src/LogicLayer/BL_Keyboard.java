@@ -71,6 +71,10 @@ public class BL_Keyboard {
 		io.sendCommand(command);
 	}
 	
+	public void sendFile(ArrayList<String> file) {
+		io.sendData(file);
+	}
+	
 //	public BufferedImage readImage(String file) {
 //		//return io.readImage(file);
 //	}

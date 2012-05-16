@@ -14,7 +14,10 @@ import LogicLayer.BL_Keyboard;
 import LogicLayer.ImageHandler;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -25,6 +28,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Dempsey, Geoffrey, Jens
+ * // http://wiki.processing.org/w/Open_Files_through_a_GUI
  */
 public class GUI extends javax.swing.JFrame {
 	// Business Layer object
@@ -35,6 +39,8 @@ public class GUI extends javax.swing.JFrame {
 	private double distance;
 	// The image that is loaded
 	private BufferedImage bufferedImage;
+	// List with gcode commands
+	private ArrayList<String> gcode;
 
 	
 	/** Creates new form NewJFrame */
@@ -91,8 +97,9 @@ public class GUI extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButtonBrowseGcode = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
+        jLabelSelectedFile = new javax.swing.JLabel();
         jButtonSendGcode = new javax.swing.JButton();
+        jLabelErrorLoad = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -359,10 +366,23 @@ public class GUI extends javax.swing.JFrame {
         jLabel9.setText("Here you can just select your .Gcode file to execute");
 
         jButtonBrowseGcode.setText("Browse..");
+        jButtonBrowseGcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseGcodeActionPerformed(evt);
+            }
+        });
 
-        jLabel10.setText("\"SelectedFile\"");
+        jLabelSelectedFile.setText("\"SelectedFile\"");
 
         jButtonSendGcode.setText("Send");
+        jButtonSendGcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSendGcodeActionPerformed(evt);
+            }
+        });
+
+        jLabelErrorLoad.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErrorLoad.setText("ErrorText");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -374,11 +394,14 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jButtonBrowseGcode)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonSendGcode)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelErrorLoad)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButtonBrowseGcode)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelSelectedFile)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonSendGcode)))))
                 .addContainerGap(350, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -388,10 +411,12 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
+                    .addComponent(jLabelSelectedFile)
                     .addComponent(jButtonBrowseGcode)
                     .addComponent(jButtonSendGcode))
-                .addContainerGap(216, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(jLabelErrorLoad)
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Load Gcode", jPanel4);
@@ -513,6 +538,46 @@ private void jButtonZDOWNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 	bl.setCommand("ZDOWN", this.distance);
 }//GEN-LAST:event_jButtonZDOWNActionPerformed
 
+private void jButtonBrowseGcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseGcodeActionPerformed
+	JFileChooser fc = new JFileChooser();
+	this.gcode = new ArrayList<String>();
+	
+	int returnVal = fc.showOpenDialog(this);
+	
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+		File f = fc.getSelectedFile();
+		jLabelSelectedFile.setText(f.getName());
+		//if (file.getName().endsWith("gcode")) {	
+		//}
+		try {
+			BufferedReader inFile = new BufferedReader(new FileReader(f));
+			String in = inFile.readLine();
+			while (in != null) {
+				this.gcode.add(in);
+				in = inFile.readLine();
+			}
+			inFile.close();
+			
+		}
+		catch(FileNotFoundException exc) {
+			// Should not trigger
+		}
+		catch(IOException exc) {
+			jLabelErrorLoad.setText("Error reading file");
+		}
+	}
+}//GEN-LAST:event_jButtonBrowseGcodeActionPerformed
+
+private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendGcodeActionPerformed
+	if (this.gcode == null) {
+		jLabelErrorLoad.setText("You have to select a file first");
+	}
+	else {
+		jLabelErrorLoad.setText("");
+		bl.sendFile(this.gcode);
+	}
+}//GEN-LAST:event_jButtonSendGcodeActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -580,7 +645,6 @@ private void jButtonZDOWNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JButton jButtonZUP;
     private javax.swing.JComboBox jComboBoxPorts;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -592,7 +656,9 @@ private void jButtonZDOWNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelConvertedImage;
+    private javax.swing.JLabel jLabelErrorLoad;
     private javax.swing.JLabel jLabelImage;
+    private javax.swing.JLabel jLabelSelectedFile;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
