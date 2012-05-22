@@ -71,12 +71,10 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jButtonConnect = new javax.swing.JButton();
-        jComboBoxPorts = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButtonLoadImage = new javax.swing.JButton();
         jLabelImage = new javax.swing.JLabel();
@@ -97,9 +95,6 @@ public class GUI extends javax.swing.JFrame {
         jTextPaneDiameter = new javax.swing.JTextPane();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jPanelMachineText = new javax.swing.JPanel();
-        jLabelErrorMachine = new javax.swing.JLabel();
-        jLabelMachineOK = new javax.swing.JLabel();
         jSliderHeight = new javax.swing.JSlider();
         jPanel5 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -122,6 +117,12 @@ public class GUI extends javax.swing.JFrame {
         jLabelSelectedFile = new javax.swing.JLabel();
         jButtonSendGcode = new javax.swing.JButton();
         jLabelErrorLoad = new javax.swing.JLabel();
+        jPanelMachineText = new javax.swing.JPanel();
+        jLabelErrorMachine = new javax.swing.JLabel();
+        jLabelMachineOK = new javax.swing.JLabel();
+        jButtonConnect = new javax.swing.JButton();
+        jComboBoxPorts = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -129,50 +130,13 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
+        jMenu3.setText("File");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar2.add(jMenu4);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButtonConnect.setLabel("CONNECT");
-        jButtonConnect.setName("connect"); // NOI18N
-        jButtonConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonConnectActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Please select a COM port from the Dropdown list and click Connect.");
-
-        jLabel4.setText("If the list is empty, make sure that the machine is properly connected, and try again.");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonConnect)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(180, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonConnect)
-                    .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(372, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Connection", jPanel1);
 
         jButtonLoadImage.setText("Browse Image..");
         jButtonLoadImage.addActionListener(new java.awt.event.ActionListener() {
@@ -214,35 +178,6 @@ public class GUI extends javax.swing.JFrame {
         jLabel16.setText("Height");
 
         jLabel17.setText("Width");
-
-        jPanelMachineText.setBackground(new java.awt.Color(0, 0, 0));
-
-        jLabelErrorMachine.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorMachine.setText("Error");
-
-        jLabelMachineOK.setForeground(new java.awt.Color(0, 153, 0));
-        jLabelMachineOK.setText("All OK");
-
-        javax.swing.GroupLayout jPanelMachineTextLayout = new javax.swing.GroupLayout(jPanelMachineText);
-        jPanelMachineText.setLayout(jPanelMachineTextLayout);
-        jPanelMachineTextLayout.setHorizontalGroup(
-            jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelMachineTextLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelErrorMachine)
-                    .addComponent(jLabelMachineOK))
-                .addContainerGap(693, Short.MAX_VALUE))
-        );
-        jPanelMachineTextLayout.setVerticalGroup(
-            jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelMachineTextLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabelMachineOK)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelErrorMachine)
-                .addContainerGap(43, Short.MAX_VALUE))
-        );
 
         jSliderHeight.setMaximum(10);
         jSliderHeight.setMinimum(1);
@@ -317,7 +252,6 @@ public class GUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
                                 .addComponent(jButtonSend)))
                         .addGap(32, 32, 32))))
-            .addComponent(jPanelMachineText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,7 +303,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addComponent(jSliderHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(jPanelMachineText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(100, 100, 100))
         );
 
         jTabbedPane1.addTab("X SCAN", jPanel2);
@@ -508,7 +442,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)))
                     .addComponent(jLabel7))
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Motor Control", jPanel3);
@@ -566,10 +500,49 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jButtonSendGcode))
                 .addGap(33, 33, 33)
                 .addComponent(jLabelErrorLoad)
-                .addContainerGap(363, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Load Gcode", jPanel4);
+
+        jPanelMachineText.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabelErrorMachine.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErrorMachine.setText("Error");
+
+        jLabelMachineOK.setForeground(new java.awt.Color(0, 153, 0));
+        jLabelMachineOK.setText("All OK");
+
+        javax.swing.GroupLayout jPanelMachineTextLayout = new javax.swing.GroupLayout(jPanelMachineText);
+        jPanelMachineText.setLayout(jPanelMachineTextLayout);
+        jPanelMachineTextLayout.setHorizontalGroup(
+            jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMachineTextLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelErrorMachine)
+                    .addComponent(jLabelMachineOK))
+                .addContainerGap(674, Short.MAX_VALUE))
+        );
+        jPanelMachineTextLayout.setVerticalGroup(
+            jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMachineTextLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabelMachineOK)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelErrorMachine)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        jButtonConnect.setLabel("CONNECT");
+        jButtonConnect.setName("connect"); // NOI18N
+        jButtonConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConnectActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Please select a COM port from the Dropdown list and click Connect.");
 
         jMenu1.setText("File");
 
@@ -603,11 +576,34 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jButtonConnect)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(27, 27, 27))
             .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelMachineText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonConnect)
+                        .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelMachineText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
 
         getAccessibleContext().setAccessibleName("frame1");
@@ -820,7 +816,6 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -834,11 +829,13 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JLabel jLabelSelectedFile;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

@@ -25,7 +25,7 @@ public class Algorithm {
 	private int[][] highestLayerImg;
 	
 	public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg) {
-		this.io = new IO_SerialsComms();
+		//this.io = new IO_SerialsComms();
 		
 		this.width = width;
 		this.height = height;
@@ -177,20 +177,20 @@ public class Algorithm {
             previousPixel = currentPixel;
         }
 		
-		this.io.sendData(this.gCode);
+		//this.io.sendData(this.gCode);
     }
     
     private void makeGCodeXY(int x, int y){
         String command = "G01 X" + x + "Y" + y;
         this.gCode.add(command);  //FEEDRATE BIJZETTEN : F100
-        //System.out.println(command);
+        System.out.println(command);
 		//this.io.sendCommand(command);
     }
     
     private void makeGCodeZ(int z){
         String command = "G01 Z" + (z - layers);
         this.gCode.add(command); //FEEDRATE BIJZETTEN : F100
-        //System.out.println(command);
+        System.out.println(command);
 		//this.io.sendCommand(command);
     }
 	

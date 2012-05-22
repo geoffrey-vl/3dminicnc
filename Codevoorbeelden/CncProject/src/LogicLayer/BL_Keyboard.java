@@ -53,10 +53,10 @@ public class BL_Keyboard {
 			this.xOrigin += factor*10;
 		}
 		else if (s.equals("ZUP")) {
-			this.zOrigin -= factor*10;
+			this.zOrigin += factor*10;
 		}
 		else if (s.equals("ZDOWN")) {
-			this.zOrigin += factor*10;
+			this.zOrigin -= factor*10;
 		}
 		
 		this.command = "G01 X" + this.xOrigin + " Y" + this.yOrigin + " Z" + this.zOrigin;
@@ -65,6 +65,9 @@ public class BL_Keyboard {
 	
 	public void startConnection(String selectedPort) {
 		io.openConnection(selectedPort);
+		io.sendCommand("G90");
+		io.sendCommand("G92 X0 Y0 Z0");
+		io.sendCommand("G21");
 	}
 	
 	public void sendCommand(String command) {
