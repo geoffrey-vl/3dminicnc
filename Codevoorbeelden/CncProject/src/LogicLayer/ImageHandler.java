@@ -4,6 +4,7 @@
  */
 package LogicLayer;
 
+import DataLayer.IO_SerialsComms;
 import java.awt.image.BufferedImage;
 
 /**
@@ -21,13 +22,13 @@ public class ImageHandler {
 	private int[][] highestLayerImg;
 	private int[][] layeredImg;
 
-	public ImageHandler(BufferedImage bufferedImage) {
+	public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io) {
 		this.bufferedImage = bufferedImage;
 		processImage(this.bufferedImage);
 		convertImageToGrayscale();
         convertImageToLayers();
         convertToHighestLayer();
-		Algorithm algorithm = new Algorithm(this.width, this.height, this.diameter, this.layers, this.highestLayerImg);
+		Algorithm algorithm = new Algorithm(this.width, this.height, this.diameter, this.layers, this.highestLayerImg, io);
 	}
 	
     /*

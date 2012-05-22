@@ -24,9 +24,8 @@ public class Algorithm {
 	private double diameter;
 	private int[][] highestLayerImg;
 	
-	public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg) {
-		//this.io = new IO_SerialsComms();
-		
+	public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg, IO_SerialsComms io) {
+		this.io = io;
 		this.width = width;
 		this.height = height;
 		this.diameter = diameter;
@@ -177,7 +176,7 @@ public class Algorithm {
             previousPixel = currentPixel;
         }
 		
-		//this.io.sendData(this.gCode);
+		this.io.sendData(this.gCode);
     }
     
     private void makeGCodeXY(int x, int y){

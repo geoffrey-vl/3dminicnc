@@ -13,6 +13,7 @@ package PresentationLayer;
 import org.imgscalr.Scalr;
 import LogicLayer.BL_Keyboard;
 import LogicLayer.ImageHandler;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -23,11 +24,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import static org.imgscalr.Scalr.*;
 
 /**
@@ -46,6 +55,7 @@ public class GUI extends javax.swing.JFrame {
 	private BufferedImage bufferedImage;
 	// List with gcode commands
 	private ArrayList<String> gcode;
+	private String newline = "\n";
 
 	
 	/** Creates new form NewJFrame */
@@ -54,12 +64,28 @@ public class GUI extends javax.swing.JFrame {
 		this.bl = new BL_Keyboard();
 		this.distance = 0.1;
                 
-                //get all available ports from business layer and add them to dropdown box
-                ArrayList<String> ports = bl.getPortList();
-                
-                for(int i = 0; i < ports.size(); i++) {
-                    jComboBoxPorts.addItem(ports.get(i));
-                }
+		//get all available ports from business layer and add them to dropdown box
+		ArrayList<String> ports = bl.getPortList();
+
+		for(int i = 0; i < ports.size(); i++) {
+			jComboBoxPorts.addItem(ports.get(i));
+		}
+		
+		jTextPaneMessages.setEditable(false);
+	}
+	
+	public void appendText(String text, Color color) {
+		try {
+			SimpleAttributeSet set = new SimpleAttributeSet();
+			jTextPaneMessages.setCharacterAttributes(set, true);
+			//StyleConstants.setItalic(set, true);
+			StyleConstants.setForeground(set, color);
+			//StyleConstants.setBackground(set, Color.blue);
+			Document doc = jTextPaneMessages.getStyledDocument();
+			doc.insertString(doc.getLength(), text + newline, set);	
+		}
+		catch (BadLocationException ex) {
+		}
 	}
 
 	/** This method is called from within the constructor to
@@ -74,6 +100,8 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jButtonLoadImage = new javax.swing.JButton();
@@ -118,8 +146,8 @@ public class GUI extends javax.swing.JFrame {
         jButtonSendGcode = new javax.swing.JButton();
         jLabelErrorLoad = new javax.swing.JLabel();
         jPanelMachineText = new javax.swing.JPanel();
-        jLabelErrorMachine = new javax.swing.JLabel();
-        jLabelMachineOK = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextPaneMessages = new javax.swing.JTextPane();
         jButtonConnect = new javax.swing.JButton();
         jComboBoxPorts = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
@@ -135,6 +163,8 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu4.setText("Edit");
         jMenuBar2.add(jMenu4);
+
+        jScrollPane4.setViewportView(jTextPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -505,13 +535,10 @@ public class GUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Load Gcode", jPanel4);
 
-        jPanelMachineText.setBackground(new java.awt.Color(0, 0, 0));
+        jPanelMachineText.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabelErrorMachine.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorMachine.setText("Error");
-
-        jLabelMachineOK.setForeground(new java.awt.Color(0, 153, 0));
-        jLabelMachineOK.setText("All OK");
+        jTextPaneMessages.setSelectedTextColor(new java.awt.Color(0, 0, 0));
+        jScrollPane5.setViewportView(jTextPaneMessages);
 
         javax.swing.GroupLayout jPanelMachineTextLayout = new javax.swing.GroupLayout(jPanelMachineText);
         jPanelMachineText.setLayout(jPanelMachineTextLayout);
@@ -519,19 +546,15 @@ public class GUI extends javax.swing.JFrame {
             jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMachineTextLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelErrorMachine)
-                    .addComponent(jLabelMachineOK))
-                .addContainerGap(674, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelMachineTextLayout.setVerticalGroup(
             jPanelMachineTextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMachineTextLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabelMachineOK)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelErrorMachine)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jButtonConnect.setLabel("CONNECT");
@@ -652,7 +675,7 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 	} catch (IOException ex) {
 		//Logger.getLogger(ImageReserveWerkend.class.getName()).log(Level.SEVERE, null, ex);
 		JOptionPane.showMessageDialog( null, ex.toString() );
-		jLabelErrorMachine.setText(ex.toString());
+		appendText(ex.toString(), Color.red);
 	}
 //	try {
 //
@@ -667,7 +690,7 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_jButtonLoadImageActionPerformed
 
 private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
-	this.ih = new ImageHandler(this.bufferedImage);
+	bl.createImage(this.bufferedImage);
 }//GEN-LAST:event_jButtonConvertActionPerformed
 
 private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
@@ -727,7 +750,8 @@ private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_jButtonSendGcodeActionPerformed
 
 private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderHeightStateChanged
-	jLabelMachineOK.setText(Integer.toString(jSliderHeight.getValue()));
+	appendText(Integer.toString(jSliderHeight.getValue()), Color.red);
+	//jTextAreaMessages.append(Integer.toString(jSliderHeight.getValue()) + newline);
 	BufferedImage scaledImage = new BufferedImage(bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, BufferedImage.TYPE_INT_ARGB);
 	
 	Graphics2D graphics2D = scaledImage.createGraphics();
@@ -823,9 +847,7 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelConvertedImage;
     private javax.swing.JLabel jLabelErrorLoad;
-    private javax.swing.JLabel jLabelErrorMachine;
     private javax.swing.JLabel jLabelImage;
-    private javax.swing.JLabel jLabelMachineOK;
     private javax.swing.JLabel jLabelSelectedFile;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -844,11 +866,15 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSlider jSliderHeight;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPaneDepth;
     private javax.swing.JTextPane jTextPaneDiameter;
     private javax.swing.JTextPane jTextPaneLayers;
+    private javax.swing.JTextPane jTextPaneMessages;
     private javax.swing.JButton leftButton;
     private javax.swing.JButton rightButton;
     // End of variables declaration//GEN-END:variables

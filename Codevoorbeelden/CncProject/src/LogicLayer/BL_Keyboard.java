@@ -63,6 +63,10 @@ public class BL_Keyboard {
 		io.sendCommand(this.command);		
 	}
 	
+	public void createImage(BufferedImage image) {
+		ImageHandler im = new ImageHandler(image, io);
+	}
+	
 	public void startConnection(String selectedPort) {
 		io.openConnection(selectedPort);
 		io.sendCommand("G90");
