@@ -12,45 +12,63 @@ import java.awt.image.BufferedImage;
  * @author Dempsey, Geoffrey, Jens
  */
 public class ImageHandler {
-	private BufferedImage bufferedImage;
-	private int width;
-	private int height;
-	private double diameter = 2;
-	private int layers = 2;
-	private int[][][] originalImgRGB;
-	private int[][] grayscaleImg;
-	private int[][] highestLayerImg;
-	private int[][] layeredImg;
+    private BufferedImage bufferedImage;
+    private int width;
+    private int height;
+    private double scaledDiameter;
+    private double r;
+    private int layers = 4;
+    private double scale;
+    private int timesCircle=0;
+    private int timesIfCircle = 0;
+    private int[][][] originalImgRGB;
+    private int[][] grayscaleImg;
+    private int[][] highestLayerImg;
+    private int[][] layeredImg;
+    private StopWatch timer;
 
-	public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io) {
-		this.bufferedImage = bufferedImage;
-		processImage(this.bufferedImage);
-		convertImageToGrayscale();
+    public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io) {
+        timer = new StopWatch();
+        timer.start();
+        this.bufferedImage = bufferedImage;
+        processImage(this.bufferedImage);
+        //Should get this out of GUI
+        double widthMM = 150;
+        double diameter = 1;
+
+        calculateScale(widthMM, diameter);
+        convertImageToGrayscale();
         convertImageToLayers();
         convertToHighestLayer();
-		Algorithm algorithm = new Algorithm(this.width, this.height, this.diameter, this.layers, this.highestLayerImg, io);
-	}
-	
-    /*
-     * Reads image from a given path, gets the sRGB values and converts these to 
-     * readable ARGB(Alpha Red Green Blue) values. These are saved in a 3D array of X and Y coordinates, 
-     * and Alpha, Red, Green, Blue. Respectively 0,1,2,3 as the third coordinate in the array.
-     */
-	private void processImage(BufferedImage bufferedImage) {
-		this.width = bufferedImage.getWidth();
-		this.height = bufferedImage.getHeight();
-		this.originalImgRGB = new int[this.width][this.height][4];
+        //highestLayerInCircle(15, 15);
+        //printArray(layeredImg);
+        Algorithm algorithm = new Algorithm(this.width, this.height, this.scaledDiameter, this.layers, this.highestLayerImg, this.scale, io);
+        timer.stop();
+        System.out.println(timer.getElapsedTime());
+        System.out.println("timesCircle:" + timesCircle);
+        System.out.println("timesIfCircle:" + timesIfCircle);
+}
 
-		for (int y = 0; y < this.height; y++) {
-			for (int x = 0; x < this.width; x++) {
-				int pixel = bufferedImage.getRGB(x, y);
-				originalImgRGB[x][y][0] = (pixel >> 24) & 0xff;
-				originalImgRGB[x][y][1] = (pixel >> 16) & 0xff;
-				originalImgRGB[x][y][2] = (pixel >> 8) & 0xff;
-				originalImgRGB[x][y][3]  = (pixel) & 0xff;
-			}
-		}
-	}
+/*
+    * Reads image from a given path, gets the sRGB values and converts these to 
+    * readable ARGB(Alpha Red Green Blue) values. These are saved in a 3D array of X and Y coordinates, 
+    * and Alpha, Red, Green, Blue. Respectively 0,1,2,3 as the third coordinate in the array.
+    */
+    private void processImage(BufferedImage bufferedImage) {
+            this.width = bufferedImage.getWidth();
+            this.height = bufferedImage.getHeight();
+            this.originalImgRGB = new int[this.width][this.height][4];
+
+            for (int y = 0; y < this.height; y++) {
+                    for (int x = 0; x < this.width; x++) {
+                            int pixel = bufferedImage.getRGB(x, y);
+                            originalImgRGB[x][y][0] = (pixel >> 24) & 0xff;
+                            originalImgRGB[x][y][1] = (pixel >> 16) & 0xff;
+                            originalImgRGB[x][y][2] = (pixel >> 8) & 0xff;
+                            originalImgRGB[x][y][3]  = (pixel) & 0xff;
+                    }
+            }
+    }
 	
     /*
      * Converts a 3D array representing an image as ARGB values to a 2D array(x/y)
@@ -90,8 +108,8 @@ public class ImageHandler {
      */
     private void convertToHighestLayer() {
         this.highestLayerImg = new int[this.width][this.height];
-        for (int y = (int)(this.diameter/2); y < (this.height-(this.diameter/2)-1); y++) {
-            for (int x = (int)(this.diameter/2); x < (this.width-(this.diameter/2)-1); x++) {
+        for (int y = (int)r; y < (this.height- r -1); y++) {
+            for (int x = (int)r; x < (this.width- r -1); x++) {
                 if (checkBoundaries(x,y)) {
                     this.highestLayerImg[x][y] = highestLayerInCircle(x, y);
                 }
@@ -104,23 +122,46 @@ public class ImageHandler {
      */
     private int highestLayerInCircle(int centerX, int centerY) {
         int highestLayer = 0;
-        for(int x = (int)Math.floor(centerX - (this.diameter/2)) ; x <= Math.ceil(centerX + (this.diameter/2)); x++) {
-            for(int y = (int)Math.floor(centerY - (this.diameter/2)) ; y <= Math.ceil(centerY + (this.diameter/2)); y++) {
-                double dst = Math.sqrt(Math.pow((x-centerX), 2) + Math.pow((y-centerY), 2));
-                if(dst < (this.diameter/2)+ 0.6) { 
+        int ceilX = (int)Math.ceil(centerX + r);
+        int ceilY = (int)Math.ceil(centerY + r);
+        int floorY = (int)Math.floor(centerY - r);
+        int floorX = (int)Math.floor(centerX - r);
+        for(int x = floorX; x <= ceilX; x++) {
+            for(int y = floorY; y <= ceilY; y++) {
+                double dst = (x-centerX)*(x-centerX) + (y-centerY)*(y-centerY);
+                if(dst < ((r + 0.6)*(r + 0.6))) { 
                     if (this.layeredImg[x][y] > highestLayer) {
                         highestLayer = this.layeredImg[x][y];
                     }
+                    if (highestLayer == layers) {return highestLayer;}
+                    timesIfCircle++;
                 } 
+                timesCircle++;
             }
         }
         return highestLayer;
     }	
 	
     private boolean checkBoundaries(int x, int y) {
-        if ((x > (this.diameter / 2)) && (y > (this.diameter / 2)) && (x < this.width - (this.diameter/2)) && (y < this.height - (this.diameter/2))) {
+        if ((x > r) && (y > r) && (x < this.width - r) && (y < this.height - r)) {
             return true;
         }
         return false;
+    }
+    
+    private void printArray(int[][] array) {
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                System.out.print(array[x][y] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+    private void calculateScale(double widthMM, double diameter) {
+        this.scale = widthMM / width;
+        this.scaledDiameter = diameter / scale;
+        this.r = scaledDiameter/2;
+        System.out.println("ScaledDiameter = " + scaledDiameter + "Diameter = " + diameter + "width = " + width + "widthmm = " + widthMM);
     }
 }

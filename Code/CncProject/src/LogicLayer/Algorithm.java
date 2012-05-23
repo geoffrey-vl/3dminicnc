@@ -12,30 +12,32 @@ import DataLayer.IO_SerialsComms;
  * @author Dempsey, Geoffrey, Jens
  */
 public class Algorithm {
-	private IO_SerialsComms io;
-	private int[][] millingPathArr;
+    private IO_SerialsComms io;
+    private int[][] millingPathArr;
     private ArrayList<Pixel> millingPath;
     private ArrayList<String> gCode;
-	private int[] borders;
-	private int layers;
-	private double overlap = 0.2;
-	
-	private int width, height;
-	private double diameter;
-	private int[][] highestLayerImg;
-	
-	public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg, IO_SerialsComms io) {
-		this.io = io;
-		this.width = width;
-		this.height = height;
-		this.diameter = diameter;
-		this.layers = layers;
-		this.highestLayerImg = highestLayerImg;
-		
+    private int[] borders;
+    private int layers;
+    private double scale;
+    //private double overlap = 0.2;
+
+    private int width, height;
+    private double diameter;
+    private int[][] highestLayerImg;
+
+
+    public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg, double scale, IO_SerialsComms io) {
+        this.io = io;
+        this.width = width;
+        this.height = height;
+        this.diameter = diameter;
+        this.layers = layers;
+        this.highestLayerImg = highestLayerImg;
+
         makeMillingPathXMode();
         //printArray(millingPathArr);
         convertPathToGCode();
-	}
+    }
 	
     private boolean makeMillingPathXMode() {
         millingPath = new ArrayList();
@@ -180,7 +182,7 @@ public class Algorithm {
     }
     
     private void makeGCodeXY(int x, int y){
-        String command = "G01 X" + x + "Y" + y;
+        String command = "G01 X" + x * scale + "Y" + y * scale;
         this.gCode.add(command);  //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
 		//this.io.sendCommand(command);
