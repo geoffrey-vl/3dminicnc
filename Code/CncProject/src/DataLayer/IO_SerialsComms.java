@@ -91,11 +91,7 @@ public class IO_SerialsComms {
         catch (InvocationTargetException e) {
             //do nothing
         }
-    }
-    
-    
-    
-    
+    }   
     
     /**
      * Gets an list of all found COM-ports

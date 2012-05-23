@@ -74,6 +74,10 @@ public class BL_Keyboard {
 		io.sendCommand("G21");
 	}
 	
+	public void setFeedRate(String feed) {
+		io.setFeedrate(feed);
+	}
+	
 	public void sendCommand(String command) {
 		io.sendCommand(command);
 	}

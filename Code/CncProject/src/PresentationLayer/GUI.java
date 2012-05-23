@@ -211,6 +211,8 @@ public class GUI extends javax.swing.JFrame {
         jButtonConnect = new javax.swing.JButton();
         jComboBoxPorts = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
+        jComboBoxFeed = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -627,6 +629,16 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Please select a COM port from the Dropdown list and click Connect.");
 
+        jComboBoxFeed.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "50", "75", "100", "125", "150" }));
+        jComboBoxFeed.setSelectedIndex(4);
+        jComboBoxFeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxFeedActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Feedrate");
+
         jMenu1.setText("File");
 
         jMenuItemOpen.setLabel("Open");
@@ -664,9 +676,13 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jButtonConnect)
                 .addGap(18, 18, 18)
                 .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(27, 27, 27))
+                .addContainerGap())
             .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -676,17 +692,28 @@ public class GUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonConnect)
-                        .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButtonConnect)
+                                .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel3)
+                            .addGap(18, 18, 18)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelMachineText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addGap(13, 13, 13))
         );
 
         getAccessibleContext().setAccessibleName("frame1");
@@ -708,7 +735,6 @@ private void dropdownDistanceActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_dropdownDistanceActionPerformed
 
 private void jButtonConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectActionPerformed
-	System.out.println((String)jComboBoxPorts.getSelectedItem());
 	bl.startConnection((String)jComboBoxPorts.getSelectedItem());
 }//GEN-LAST:event_jButtonConnectActionPerformed
 
@@ -820,6 +846,10 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
 	//graphics2D.dispose();
 }//GEN-LAST:event_jSliderHeightStateChanged
 
+private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFeedActionPerformed
+	bl.setFeedRate("F" + jComboBoxFeed.getSelectedItem().toString());
+}//GEN-LAST:event_jComboBoxFeedActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -887,6 +917,7 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JButton jButtonUp;
     private javax.swing.JButton jButtonZDOWN;
     private javax.swing.JButton jButtonZUP;
+    private javax.swing.JComboBox jComboBoxFeed;
     private javax.swing.JComboBox jComboBoxPorts;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -899,6 +930,7 @@ private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
