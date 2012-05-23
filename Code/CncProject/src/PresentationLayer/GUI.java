@@ -100,8 +100,9 @@ public class GUI extends javax.swing.JFrame {
                 });
                 
 		this.distance = 0.1;
+		
                 jTextPaneMessages.setEditable(false);
-                appendText("Scanning for serial ports, this may take a while... Program may not respond in meanwhile", Color.BLUE);
+                appendText("Scanning for serial ports, this may take a while... Meanwhile the program may not respond", Color.BLUE);
 	}
         
         
@@ -124,7 +125,7 @@ public class GUI extends javax.swing.JFrame {
                     jComboBoxPorts.addItem(ports.get(i));
             }
 
-            appendText("Scanning complete, you can now select COM port above", Color.BLUE);
+            appendText("Scanning complete, you can now select the COM port above", Color.BLUE);
         }
         
 	
@@ -138,9 +139,7 @@ public class GUI extends javax.swing.JFrame {
 		try {
 			SimpleAttributeSet set = new SimpleAttributeSet();
 			jTextPaneMessages.setCharacterAttributes(set, true);
-			//StyleConstants.setItalic(set, true);
 			StyleConstants.setForeground(set, color);
-			//StyleConstants.setBackground(set, Color.blue);
 			Document doc = jTextPaneMessages.getStyledDocument();
 			doc.insertString(doc.getLength(), text + newline, set);	
 		}
@@ -204,7 +203,6 @@ public class GUI extends javax.swing.JFrame {
         jButtonBrowseGcode = new javax.swing.JButton();
         jLabelSelectedFile = new javax.swing.JLabel();
         jButtonSendGcode = new javax.swing.JButton();
-        jLabelErrorLoad = new javax.swing.JLabel();
         jPanelMachineText = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextPaneMessages = new javax.swing.JTextPane();
@@ -557,9 +555,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabelErrorLoad.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelErrorLoad.setText("ErrorText");
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -570,14 +565,11 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelErrorLoad)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButtonBrowseGcode)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelSelectedFile)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonSendGcode)))))
+                        .addComponent(jButtonBrowseGcode)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelSelectedFile)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonSendGcode)))
                 .addContainerGap(434, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -590,9 +582,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabelSelectedFile)
                     .addComponent(jButtonBrowseGcode)
                     .addComponent(jButtonSendGcode))
-                .addGap(33, 33, 33)
-                .addComponent(jLabelErrorLoad)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Load Gcode", jPanel4);
@@ -676,11 +666,11 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jButtonConnect)
                 .addGap(18, 18, 18)
                 .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel3)
                 .addContainerGap())
             .addComponent(jTabbedPane1)
@@ -693,23 +683,18 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButtonConnect)
-                                .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel3)
-                            .addGap(18, 18, 18)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jButtonConnect)
+                            .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)))
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelMachineText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -759,20 +744,9 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 		BufferedImage thumbnail = Scalr.resize(bufferedImage, 150);
 		jLabelImage.setIcon(new ImageIcon(thumbnail));
 	} catch (IOException ex) {
-		//Logger.getLogger(ImageReserveWerkend.class.getName()).log(Level.SEVERE, null, ex);
 		JOptionPane.showMessageDialog( null, ex.toString() );
 		appendText(ex.toString(), Color.red);
 	}
-//	try {
-//
-//		// Buffered read from file
-//		BufferedImage image = bl.readImage("images.jpg");
-//	  //Show the image inside the label
-//		jLabelImage.setIcon(new ImageIcon(image));
-//	} catch (Exception e) {
-//	  //Display a message if something goes wrong
-//	  JOptionPane.showMessageDialog( null, e.toString() );
-//	}
 }//GEN-LAST:event_jButtonLoadImageActionPerformed
 
 private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
@@ -820,17 +794,16 @@ private void jButtonBrowseGcodeActionPerformed(java.awt.event.ActionEvent evt) {
 			// Should not trigger
 		}
 		catch(IOException exc) {
-			jLabelErrorLoad.setText("Error reading file");
+			appendText("Error reading file", Color.red);
 		}
 	}
 }//GEN-LAST:event_jButtonBrowseGcodeActionPerformed
 
 private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendGcodeActionPerformed
 	if (this.gcode == null) {
-		jLabelErrorLoad.setText("You have to select a file first");
+		appendText("You have to select a file first", Color.red);
 	}
 	else {
-		jLabelErrorLoad.setText("");
 		bl.sendFile(this.gcode);
 	}
 }//GEN-LAST:event_jButtonSendGcodeActionPerformed
@@ -937,7 +910,6 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelConvertedImage;
-    private javax.swing.JLabel jLabelErrorLoad;
     private javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelSelectedFile;
     private javax.swing.JMenu jMenu1;
