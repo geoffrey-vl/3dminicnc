@@ -183,8 +183,10 @@ public class IO_SerialsComms {
                 //write to serial
                 outputStream.write(cmd.getBytes());
                 outputStream.flush();
-            } catch (IOException e) {}
-
+            } catch (IOException e) {
+				consoleWriteLine(e.getMessage(), ERROR);
+			}
+				
             txLineNumber++;
 
 

@@ -198,6 +198,10 @@ public class GUI extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextPaneOneLine = new javax.swing.JTextPane();
+        jButtonSendOne = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButtonBrowseGcode = new javax.swing.JButton();
@@ -461,6 +465,17 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel11.setText("Here you can control the machine by setting a distance and pressing the control buttons");
 
+        jLabel18.setText("Send Code");
+
+        jScrollPane6.setViewportView(jTextPaneOneLine);
+
+        jButtonSendOne.setText("Send");
+        jButtonSendOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSendOneActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -469,35 +484,44 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
+                    .addComponent(jLabel18)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addGap(83, 83, 83)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addGap(18, 18, 18)
+                                .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(56, 56, 56)
-                                        .addComponent(jLabel5))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(68, 68, 68)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonUp, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButtonDown))))
-                                .addGap(106, 106, 106)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jButtonZUP, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonZDOWN)))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(56, 56, 56)
+                                                .addComponent(jLabel5))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(68, 68, 68)
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jButtonUp, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jButtonDown))))
+                                        .addGap(106, 106, 106)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jButtonZUP, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonZDOWN)))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(leftButton)
+                                        .addGap(75, 75, 75)
+                                        .addComponent(rightButton))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(leftButton)
-                                .addGap(75, 75, 75)
-                                .addComponent(rightButton)))))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonSendOne)))))
                 .addContainerGap(146, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -532,7 +556,13 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)))
                     .addComponent(jLabel7))
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jLabel18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSendOne))
+                .addGap(91, 91, 91))
         );
 
         jTabbedPane1.addTab("Motor Control", jPanel3);
@@ -546,7 +576,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabelSelectedFile.setText("\"SelectedFile\"");
+        jLabelSelectedFile.setText("selected File");
 
         jButtonSendGcode.setText("Send");
         jButtonSendGcode.addActionListener(new java.awt.event.ActionListener() {
@@ -750,7 +780,12 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_jButtonLoadImageActionPerformed
 
 private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
-	bl.createImage(this.bufferedImage);
+	if (this.jLabelImage.getIcon() == null) {
+		appendText("Please first load an image", Color.red);
+	}
+	else {
+		bl.createImage(this.bufferedImage);
+	}
 }//GEN-LAST:event_jButtonConvertActionPerformed
 
 private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
@@ -823,6 +858,15 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 	bl.setFeedRate("F" + jComboBoxFeed.getSelectedItem().toString());
 }//GEN-LAST:event_jComboBoxFeedActionPerformed
 
+private void jButtonSendOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendOneActionPerformed
+	if (this.jTextPaneOneLine.getText() == null || this.jTextPaneOneLine.getText().trim().equals( "" )) {
+		appendText("You have to enter a line of code first", Color.red);
+	}
+	else {
+		bl.sendCommand(this.jTextPaneOneLine.getText());
+	}
+}//GEN-LAST:event_jButtonSendOneActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -887,6 +931,7 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JButton jButtonLoadImage;
     private javax.swing.JButton jButtonSend;
     private javax.swing.JButton jButtonSendGcode;
+    private javax.swing.JButton jButtonSendOne;
     private javax.swing.JButton jButtonUp;
     private javax.swing.JButton jButtonZDOWN;
     private javax.swing.JButton jButtonZUP;
@@ -901,6 +946,7 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -931,6 +977,7 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSlider jSliderHeight;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
@@ -938,6 +985,7 @@ private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JTextPane jTextPaneDiameter;
     private javax.swing.JTextPane jTextPaneLayers;
     private static javax.swing.JTextPane jTextPaneMessages;
+    private javax.swing.JTextPane jTextPaneOneLine;
     private javax.swing.JButton leftButton;
     private javax.swing.JButton rightButton;
     // End of variables declaration//GEN-END:variables
