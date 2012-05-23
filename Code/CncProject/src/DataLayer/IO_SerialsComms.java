@@ -34,6 +34,7 @@ public class IO_SerialsComms {
     private static Method consoleMethod = null;
     private static final Color INFO = Color.BLUE;
     private static final Color ERROR = Color.RED;
+    private static final Color OK = Color.GREEN;
 	
     
     
@@ -140,9 +141,12 @@ public class IO_SerialsComms {
  
         for(; txTrySendLineNumber<message.size(); txTrySendLineNumber++) { //loop over all lines
             
+            consoleWriteLine("Try sending " + txTrySendLineNumber + "/" + message.size(), INFO);
+            
             while(true){
                 //try send
                 if(txTrySendLineNumber == rxLineNumber) {
+                    
                     sendCommand((String)message.get(txTrySendLineNumber));
                     break; 
                 }
@@ -176,7 +180,7 @@ public class IO_SerialsComms {
             cmd += "\n";
 
             //report to console
-            consoleWriteLine("Writing \t" + cmd + "\t to " + serialPort.getName(), INFO);
+            consoleWriteLine("Sending \t" + cmd + "\t to " + serialPort.getName(), INFO);
             //System.out.println("Writing \t" + cmd + "\t to " + serialPort.getName());
 
             try {
@@ -342,7 +346,7 @@ public class IO_SerialsComms {
         if(rc.contains("ok")) {         //received an OK
             rxLineNumber++;
             consoleWriteLine("3D MINI CNC: " + rc, INFO);
-            consoleWriteLine("CONFIRMED: " + rxLineNumber, INFO);
+            consoleWriteLine("CONFIRMED: " + rxLineNumber, OK);
             //System.out.println("CONFIRMED: " + rxLineNumber);
         } 
         
