@@ -19,6 +19,7 @@ public class Algorithm {
     private int[] borders;
     private int layers;
     private double scale;
+    private double depthScale;
     //private double overlap = 0.2;
 
     private int width, height;
@@ -26,18 +27,23 @@ public class Algorithm {
     private int[][] highestLayerImg;
 
 
-    public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg, double scale, IO_SerialsComms io) {
+    public Algorithm(int width, int height, double diameter, int layers, int[][] highestLayerImg, double scale, double depthScale, IO_SerialsComms io) {
         this.io = io;
         this.width = width;
         this.height = height;
         this.diameter = diameter;
         this.layers = layers;
         this.highestLayerImg = highestLayerImg;
-		this.scale = scale;
-
+        this.scale = scale;
+        this.depthScale = depthScale;
+        
         makeMillingPathXMode();
         //printArray(millingPathArr);
         convertPathToGCode();
+    }
+
+    public ArrayList<String> getgCode() {
+        return gCode;
     }
 	
     private boolean makeMillingPathXMode() {
@@ -183,19 +189,19 @@ public class Algorithm {
     }
     
     private void makeGCodeXY(int x, int y){
-		double xDouble = x;
-		double yDouble = y;
+        double xDouble = x;
+        double yDouble = y;
         String command = "G01 X" + xDouble * scale + "Y" + yDouble * scale;
         this.gCode.add(command);  //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
-		//this.io.sendCommand(command);
+	//this.io.sendCommand(command);
     }
     
     private void makeGCodeZ(int z){
-        String command = "G01 Z" + (z - layers);
+        String command = "G01 Z" + (z - layers) * depthScale;
         this.gCode.add(command); //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
-		//this.io.sendCommand(command);
+        //this.io.sendCommand(command);
     }
 	
 }

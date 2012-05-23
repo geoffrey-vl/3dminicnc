@@ -63,8 +63,9 @@ public class BL_Keyboard {
 		io.sendCommand(this.command);		
 	}
 	
-	public void createImage(BufferedImage image, int diameter, int layers, int depth, int width) {
+	public ArrayList<String> createImage(BufferedImage image, int diameter, int layers, int depth, int width) {
 		ImageHandler im = new ImageHandler(image, io, diameter, layers, depth, width);
+                return im.convert();
 	}
 	
 	public void startConnection(String selectedPort) {

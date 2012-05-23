@@ -4,6 +4,7 @@
  */
 package LogicLayer;
 
+import java.util.ArrayList;
 import DataLayer.IO_SerialsComms;
 import java.awt.image.BufferedImage;
 
@@ -15,9 +16,13 @@ public class ImageHandler {
     private BufferedImage bufferedImage;
     private int width;
     private int height;
+    private int widthMM;
+    private double depth;
+    private double depthScale;
+    private double diameter;
     private double scaledDiameter;
     private double r;
-    private int layers = 4;
+    private int layers;
     private double scale;
     private int timesCircle=0;
     private int timesIfCircle = 0;
@@ -25,28 +30,37 @@ public class ImageHandler {
     private int[][] grayscaleImg;
     private int[][] highestLayerImg;
     private int[][] layeredImg;
+    private IO_SerialsComms io;
     private StopWatch timer;
 
-    public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io, int diameter, int layers, int depth, int width) {
+    public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io, double diameter, int layers, double depth, int widthMM) {
         timer = new StopWatch();
         timer.start();
         this.bufferedImage = bufferedImage;
         processImage(this.bufferedImage);
         //Should get this out of GUI
-        double widthMM = 150;
-
+        this.widthMM = widthMM;
+        this.io = io;
+        this.depth = depth;
+        this.diameter = diameter;
+        this.layers = layers;
+    }
+    
+    public ArrayList<String> convert() {
         calculateScale(widthMM, diameter);
         convertImageToGrayscale();
         convertImageToLayers();
         convertToHighestLayer();
         //highestLayerInCircle(15, 15);
         //printArray(layeredImg);
-        Algorithm algorithm = new Algorithm(this.width, this.height, this.scaledDiameter, this.layers, this.highestLayerImg, this.scale, io);
+        Algorithm algorithm = new Algorithm(this.width, this.height, this.scaledDiameter, this.layers, this.highestLayerImg, this.scale, this.depthScale, this.io);
         timer.stop();
         System.out.println(timer.getElapsedTime());
         System.out.println("timesCircle:" + timesCircle);
         System.out.println("timesIfCircle:" + timesIfCircle);
-}
+        
+        return algorithm.getgCode();
+    }
 
 /*
     * Reads image from a given path, gets the sRGB values and converts these to 
@@ -161,6 +175,7 @@ public class ImageHandler {
         this.scale = widthMM / width;
         this.scaledDiameter = diameter / scale;
         this.r = scaledDiameter/2;
+        this.depthScale = layers/depth;
         System.out.println("ScaledDiameter = " + scaledDiameter + "Diameter = " + diameter + "width = " + width + "widthmm = " + widthMM);
     }
 }
