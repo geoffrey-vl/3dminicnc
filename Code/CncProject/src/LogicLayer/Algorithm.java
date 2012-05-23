@@ -33,6 +33,7 @@ public class Algorithm {
         this.diameter = diameter;
         this.layers = layers;
         this.highestLayerImg = highestLayerImg;
+		this.scale = scale;
 
         makeMillingPathXMode();
         //printArray(millingPathArr);
@@ -182,7 +183,9 @@ public class Algorithm {
     }
     
     private void makeGCodeXY(int x, int y){
-        String command = "G01 X" + x * scale + "Y" + y * scale;
+		double xDouble = x;
+		double yDouble = y;
+        String command = "G01 X" + xDouble * scale + "Y" + yDouble * scale;
         this.gCode.add(command);  //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
 		//this.io.sendCommand(command);

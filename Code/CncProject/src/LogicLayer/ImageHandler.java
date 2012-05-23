@@ -27,14 +27,13 @@ public class ImageHandler {
     private int[][] layeredImg;
     private StopWatch timer;
 
-    public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io) {
+    public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io, int diameter, int layers, int depth, int width) {
         timer = new StopWatch();
         timer.start();
         this.bufferedImage = bufferedImage;
         processImage(this.bufferedImage);
         //Should get this out of GUI
         double widthMM = 150;
-        double diameter = 1;
 
         calculateScale(widthMM, diameter);
         convertImageToGrayscale();
