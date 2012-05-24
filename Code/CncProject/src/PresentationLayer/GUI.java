@@ -14,6 +14,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.ContainerListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.imgscalr.Scalr;
 import LogicLayer.BL_Keyboard;
 import LogicLayer.ImageHandler;
@@ -30,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
@@ -180,12 +183,14 @@ public class GUI extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPaneDiameter = new javax.swing.JTextPane();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jSliderHeight = new javax.swing.JSlider();
+        jLabelHeight = new javax.swing.JLabel();
+        jLabelWidth = new javax.swing.JLabel();
+        jSliderScale = new javax.swing.JSlider();
         jPanel5 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButtonUp = new javax.swing.JButton();
         leftButton = new javax.swing.JButton();
@@ -219,10 +224,9 @@ public class GUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -278,18 +282,14 @@ public class GUI extends javax.swing.JFrame {
         jTextPaneDiameter.setText("2");
         jScrollPane3.setViewportView(jTextPaneDiameter);
 
-        jLabel16.setText("Height");
-
-        jLabel17.setText("Width");
-
-        jSliderHeight.setMaximum(10);
-        jSliderHeight.setMinimum(1);
-        jSliderHeight.setPaintLabels(true);
-        jSliderHeight.setPaintTicks(true);
-        jSliderHeight.setSnapToTicks(true);
-        jSliderHeight.addChangeListener(new javax.swing.event.ChangeListener() {
+        jSliderScale.setMaximum(180);
+        jSliderScale.setMinimum(10);
+        jSliderScale.setPaintLabels(true);
+        jSliderScale.setPaintTicks(true);
+        jSliderScale.setSnapToTicks(true);
+        jSliderScale.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSliderHeightStateChanged(evt);
+                jSliderScaleStateChanged(evt);
             }
         });
 
@@ -308,6 +308,10 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel20.setText("mm");
 
+        jLabel16.setText("Width:");
+
+        jLabel17.setText("Height:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -321,10 +325,12 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel14)
-                                .addComponent(jLabel13)
-                                .addComponent(jLabel15)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel13))
+                                .addGap(15, 15, 15))
+                            .addComponent(jLabel15))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -334,28 +340,33 @@ public class GUI extends javax.swing.JFrame {
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(88, 88, 88)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel17)
-                                            .addComponent(jLabel16))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jSliderHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(136, 136, 136)
+                                        .addComponent(jSliderScale, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel20)
-                                            .addComponent(jLabel19))))
-                                .addContainerGap(279, Short.MAX_VALUE))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel19)
+                                                .addGap(176, 176, 176)
+                                                .addComponent(jLabel16)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabelWidth)
+                                                .addGap(25, 25, 25)
+                                                .addComponent(jLabel17)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabelHeight)))))
+                                .addContainerGap(68, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                         .addGap(93, 93, 93)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                                             .addComponent(jLabelImage, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                                            .addComponent(jButtonLoadImage, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                                            .addComponent(jButtonLoadImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(119, 119, 119)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabelConvertedImage, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                                            .addComponent(jLabelConvertedImage, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                                             .addComponent(jLabel2))
                                         .addGap(96, 96, 96)
                                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -397,7 +408,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                                 .addComponent(jLabel14)
                                 .addGap(15, 15, 15))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -406,22 +417,20 @@ public class GUI extends javax.swing.JFrame {
                                     .addComponent(jLabel20)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(13, 13, 13)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel15)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel19)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel19)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(36, 36, 36))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel17))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jSliderHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(36, 36, 36)
+                        .addComponent(jSliderScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelWidth)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabelHeight))))
                 .addGap(216, 216, 216))
         );
 
@@ -547,7 +556,7 @@ public class GUI extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSendOne)))))
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -581,7 +590,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(dropdownDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)))
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,7 +634,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabelSelectedFile)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonSendGcode)))
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addContainerGap(434, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,7 +646,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabelSelectedFile)
                     .addComponent(jButtonBrowseGcode)
                     .addComponent(jButtonSendGcode))
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Load Gcode", jPanel4);
@@ -684,13 +693,23 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel4.setText("Feedrate");
 
-        jMenu1.setText("File");
-
-        jMenuItemOpen.setLabel("Open");
-        jMenu1.add(jMenuItemOpen);
+        jMenu1.setText("Menu");
 
         jMenuItemSave.setLabel("Save");
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemSave);
+
+        jMenuItem2.setText("About");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuItem1.setLabel("Exit");
         jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -706,9 +725,6 @@ public class GUI extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("About");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -746,7 +762,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jComboBoxPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
                             .addComponent(jComboBoxFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)))
@@ -798,6 +814,8 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 		this.bufferedImage = ImageIO.read(inputFile);
 		BufferedImage thumbnail = Scalr.resize(bufferedImage, 150);
 		jLabelImage.setIcon(new ImageIcon(thumbnail));
+		jLabelHeight.setText(Integer.toString(bufferedImage.getHeight()));
+		jLabelWidth.setText(Integer.toString(bufferedImage.getWidth()));
 	} catch (IOException ex) {
 		JOptionPane.showMessageDialog( null, ex.toString() );
 		appendText(ex.toString(), Color.red);
@@ -813,7 +831,7 @@ private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GE
 		int diameter = Integer.parseInt(this.jTextPaneDiameter.getText());
 		int layers = Integer.parseInt(this.jTextPaneLayers.getText());
 		int depth = Integer.parseInt(this.jTextPaneDepth.getText());
-		int width = 150;
+		int width = Integer.parseInt(jLabelWidth.getText());
 		this.gcode = bl.createImage(this.bufferedImage, diameter, layers, depth, width);
 		BufferedImage img = bl.getImage();
 		BufferedImage thumbnail = Scalr.resize(img, 150);
@@ -876,15 +894,28 @@ private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//
 	}
 }//GEN-LAST:event_jButtonSendGcodeActionPerformed
 
-private void jSliderHeightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderHeightStateChanged
-	appendText(Integer.toString(jSliderHeight.getValue()), Color.red);
+private void jSliderScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderScaleStateChanged
+	appendText(Integer.toString(jSliderScale.getValue()), Color.red);
+	int width = this.bufferedImage.getWidth();
+	int height = this.bufferedImage.getHeight();	
+	
+	if (width > height) {
+		double scaleImage = height / width;
+		this.jLabelWidth.setText(Integer.toString(jSliderScale.getValue()));
+		this.jLabelHeight.setText(Double.toString(scaleImage * jSliderScale.getValue()));
+	}
+	else {
+		double scaleImage = width / height;
+		this.jLabelHeight.setText(Integer.toString(jSliderScale.getValue()));
+		this.jLabelWidth.setText(Double.toString(scaleImage * jSliderScale.getValue()));		
+	}
 	//BufferedImage scaledImage = new BufferedImage(bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, BufferedImage.TYPE_INT_ARGB);
 	
 	//Graphics2D graphics2D = scaledImage.createGraphics();
 	//graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	//graphics2D.drawImage(bufferedImage, 0, 0, bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, null);
 
-}//GEN-LAST:event_jSliderHeightStateChanged
+}//GEN-LAST:event_jSliderScaleStateChanged
 
 private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFeedActionPerformed
 	bl.setFeedRate("F" + jComboBoxFeed.getSelectedItem().toString());
@@ -904,6 +935,26 @@ private void jButtonSendOneActionPerformed(java.awt.event.ActionEvent evt) {//GE
             bl.sendFile(this.gcode);
         }
     }//GEN-LAST:event_jButtonSendActionPerformed
+
+private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+ 	try {
+		FileWriter writer = new FileWriter("save.gcode");
+			for (String str: gcode) {
+				writer.write(str);
+			}
+			
+			writer.close();
+		} catch (IOException ex) {
+			appendText(ex.toString(), Color.red);
+		}
+}//GEN-LAST:event_jMenuItemSaveActionPerformed
+
+private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+	JOptionPane.showMessageDialog(this,
+    "Made by Geoffrey, Jens & Dempsey.",
+    "3D Mini CNC Software",
+    JOptionPane.INFORMATION_MESSAGE);
+}//GEN-LAST:event_jMenuItem2ActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -996,16 +1047,17 @@ private void jButtonSendOneActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelConvertedImage;
+    private javax.swing.JLabel jLabelHeight;
     private javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelSelectedFile;
+    private javax.swing.JLabel jLabelWidth;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItemOpen;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1018,7 +1070,7 @@ private void jButtonSendOneActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JSlider jSliderHeight;
+    private javax.swing.JSlider jSliderScale;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPaneDepth;
