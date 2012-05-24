@@ -43,7 +43,7 @@ public class Algorithm {
     }
 
     public ArrayList<String> getgCode() {
-        return gCode;
+        return this.gCode;
     }
 	
     private boolean makeMillingPathXMode() {
@@ -185,7 +185,7 @@ public class Algorithm {
             previousPixel = currentPixel;
         }
 		
-		this.io.sendData(this.gCode);
+		//this.io.sendData(this.gCode);
     }
     
     private void makeGCodeXY(int x, int y){
