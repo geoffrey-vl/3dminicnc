@@ -18,6 +18,7 @@ public class BL_Keyboard {
 	private double yOrigin;
 	private double zOrigin;
 	private String command;
+	private ImageHandler im;
 
 	public ArrayList<String> getPortList() {
 		return io.getPortList();
@@ -64,8 +65,12 @@ public class BL_Keyboard {
 	}
 	
 	public ArrayList<String> createImage(BufferedImage image, int diameter, int layers, int depth, int width) {
-		ImageHandler im = new ImageHandler(image, io, diameter, layers, depth, width);
+		this.im = new ImageHandler(image, io, diameter, layers, depth, width);
                 return im.convert();
+	}
+	
+	public BufferedImage getImage() {
+		return this.im.getImage();
 	}
 	
 	public void startConnection(String selectedPort) {

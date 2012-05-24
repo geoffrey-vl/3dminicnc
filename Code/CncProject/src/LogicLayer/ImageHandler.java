@@ -32,6 +32,12 @@ public class ImageHandler {
     private int[][] layeredImg;
     private IO_SerialsComms io;
     private StopWatch timer;
+	
+	private BufferedImage convertedImage;
+	
+	public BufferedImage getImage() {
+		return this.convertedImage;
+	}
 
     public ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io, double diameter, int layers, double depth, int widthMM) {
         timer = new StopWatch();
