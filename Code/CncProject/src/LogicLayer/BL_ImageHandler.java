@@ -6,6 +6,7 @@ package LogicLayer;
 
 import java.util.ArrayList;
 import DataLayer.IO_SerialsComms;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
  */
 public class BL_ImageHandler {
     private BufferedImage bufferedImage;
+    private BufferedImage convertedImage;
     private int width;
     private int height;
     private int widthMM;
@@ -28,16 +30,15 @@ public class BL_ImageHandler {
     private int timesIfCircle = 0;
     private int[][][] originalImgRGB;
     private int[][] grayscaleImg;
+    private int[][] grayscaleImgMirrored;
     private int[][] highestLayerImg;
     private int[][] layeredImg;
     private IO_SerialsComms io;
     private BL_StopWatch timer;
-	
-	private BufferedImage convertedImage;
-	
-	public BufferedImage getImage() {
-		return this.convertedImage;
-	}
+
+    public BufferedImage getImage() {
+            return this.convertedImage;
+    }
 
     public BL_ImageHandler(BufferedImage bufferedImage, IO_SerialsComms io, double diameter, int layers, double depth, int widthMM) {
         timer = new BL_StopWatch();
@@ -56,8 +57,10 @@ public class BL_ImageHandler {
     public ArrayList<String> convert() {
         calculateScale(widthMM, diameter);
         convertImageToGrayscale();
+        //mirrorImageGrayscale();
         convertImageToLayers();
         convertToHighestLayer();
+        convertLayersToImage();
         //highestLayerInCircle(15, 15);
         //printArray(layeredImg);
         BL_Algorithm algorithm = new BL_Algorithm(this.width, this.height, this.scaledDiameter, this.layers, this.highestLayerImg, this.scale, this.depthScale, this.io);
@@ -101,6 +104,18 @@ public class BL_ImageHandler {
             for (int x = 0; x < this.width; x++) {
                 double grey = 0.2125 * this.originalImgRGB[x][y][1] + 0.7154 * this.originalImgRGB[x][y][2] + 0.0721 * this.originalImgRGB[x][y][3];
                 this.grayscaleImg[x][y] = (int)Math.round(grey);
+            }
+        }
+    }
+    
+        
+    private void mirrorImageGrayscale() {
+        this.grayscaleImgMirrored = new int[this.width][this.height];
+        for(int i = 0; i < grayscaleImg.length; i++) {
+            int y = grayscaleImg[0].length;
+            for(int j = 0; j < grayscaleImg[0].length; j++) {
+                grayscaleImgMirrored[i][y] = grayscaleImg[i][j];
+                y--;
             }
         }
     }
@@ -167,6 +182,17 @@ public class BL_ImageHandler {
             return true;
         }
         return false;
+    }
+    
+    private void convertLayersToImage() {
+        convertedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < this.height; y++) {
+                for (int x = 0; x < this.width; x++) {
+                    int value = highestLayerImg[x][y] * layers;
+                    Color rgb = new Color(value, value, value);
+                    convertedImage.setRGB(x, y, rgb.getRGB());
+                }
+        }
     }
     
     private void printArray(int[][] array) {
