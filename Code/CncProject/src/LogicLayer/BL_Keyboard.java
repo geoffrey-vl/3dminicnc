@@ -66,7 +66,7 @@ public class BL_Keyboard {
 	
 	public ArrayList<String> createImage(BufferedImage image, int diameter, int layers, int depth, int width) {
 		this.im = new ImageHandler(image, io, diameter, layers, depth, width);
-        return im.convert();
+                return im.convert();
 	}
 	
 	public BufferedImage getImage() {

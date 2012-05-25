@@ -896,18 +896,18 @@ private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//
 
 private void jSliderScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderScaleStateChanged
 	appendText(Integer.toString(jSliderScale.getValue()), Color.red);
-	int width = this.bufferedImage.getWidth();
-	int height = this.bufferedImage.getHeight();	
+	double width = this.bufferedImage.getWidth();
+	double height = this.bufferedImage.getHeight();	
 	
 	if (width > height) {
 		double scaleImage = height / width;
 		this.jLabelWidth.setText(Integer.toString(jSliderScale.getValue()));
-		this.jLabelHeight.setText(Double.toString(scaleImage * jSliderScale.getValue()));
+		this.jLabelHeight.setText(Integer.toString((int)Math.round(scaleImage * (double)jSliderScale.getValue())));
 	}
 	else {
 		double scaleImage = width / height;
 		this.jLabelHeight.setText(Integer.toString(jSliderScale.getValue()));
-		this.jLabelWidth.setText(Double.toString(scaleImage * jSliderScale.getValue()));		
+		this.jLabelWidth.setText(Integer.toString((int)Math.round(scaleImage * (double)jSliderScale.getValue())));		
 	}
 	//BufferedImage scaledImage = new BufferedImage(bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, BufferedImage.TYPE_INT_ARGB);
 	
