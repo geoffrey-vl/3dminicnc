@@ -866,7 +866,7 @@ private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GE
 		this.gcode = bl.createImage(this.bufferedImage, diameter, layers, depth, width);
 		//BufferedImage img = bl.getImage();
 		//BufferedImage thumbnail = Scalr.resize(img, 150);
-		//jLabelConvertedImage.setIcon(new ImageIcon(thumbnail));
+		jLabelConvertedImage.setIcon(new ImageIcon(bl.getImage()));
 	}
 }//GEN-LAST:event_jButtonConvertActionPerformed
 
