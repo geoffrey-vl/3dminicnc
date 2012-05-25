@@ -189,7 +189,7 @@ public class BL_ImageHandler {
         for (int y = 0; y < this.height; y++) {
                 for (int x = 0; x < this.width; x++) {
                     int value = highestLayerImg[x][y] * (255/layers);
-                    System.out.println(highestLayerImg[x][y]);
+                    //System.out.println(highestLayerImg[x][y]);
                     Color rgb = new Color(value, value, value);
                     convertedImage.setRGB(x, y, rgb.getRGB());
                 }

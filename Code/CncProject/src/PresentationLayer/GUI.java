@@ -829,7 +829,7 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
    
 	try {
 		this.bufferedImage = ImageIO.read(inputFile);
-		BufferedImage thumbnail = Scalr.resize(bufferedImage, 150);
+		BufferedImage thumbnail = Scalr.resize(bufferedImage, 120);
 		jLabelImage.setIcon(new ImageIcon(thumbnail));
 		jLabelHeight.setText(Integer.toString(bufferedImage.getHeight()));
 		jLabelWidth.setText(Integer.toString(bufferedImage.getWidth()));
@@ -858,15 +858,16 @@ private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GE
 		appendText("Please first load an image", Color.red);
 	}
 	else {
+		appendText("Converting image to gCode, this might take a while", Color.blue);
 		// width in mm, diameter frees in mm, aantal lagen, diepte)
 		int diameter = Integer.parseInt(this.jTextPaneDiameter.getText());
 		int layers = Integer.parseInt(this.jTextPaneLayers.getText());
 		int depth = Integer.parseInt(this.jTextPaneDepth.getText());
 		int width = Integer.parseInt(jLabelWidth.getText());
 		this.gcode = bl.createImage(this.bufferedImage, diameter, layers, depth, width);
-		//BufferedImage img = bl.getImage();
-		//BufferedImage thumbnail = Scalr.resize(img, 150);
-		jLabelConvertedImage.setIcon(new ImageIcon(bl.getImage()));
+		BufferedImage img = bl.getImage();
+		BufferedImage thumbnail = Scalr.resize(img, 150);
+		jLabelConvertedImage.setIcon(new ImageIcon(thumbnail));
 	}
 }//GEN-LAST:event_jButtonConvertActionPerformed
 
@@ -939,12 +940,6 @@ private void jSliderScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-
 		this.jLabelHeight.setText(Integer.toString(jSliderScale.getValue()));
 		this.jLabelWidth.setText(Integer.toString((int)Math.round(scaleImage * (double)jSliderScale.getValue())));		
 	}
-	//BufferedImage scaledImage = new BufferedImage(bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, BufferedImage.TYPE_INT_ARGB);
-	
-	//Graphics2D graphics2D = scaledImage.createGraphics();
-	//graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	//graphics2D.drawImage(bufferedImage, 0, 0, bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2, null);
-
 }//GEN-LAST:event_jSliderScaleStateChanged
 
 private void jComboBoxFeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFeedActionPerformed
