@@ -18,3 +18,8 @@ git pull 3dminicnc master
 
 
 https password: Timelab09
+
+
+
+git resetten:
+git reset --hard HEAD
