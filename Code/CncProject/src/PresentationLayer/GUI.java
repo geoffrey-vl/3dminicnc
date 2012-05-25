@@ -191,6 +191,8 @@ public class GUI extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButtonUp = new javax.swing.JButton();
         leftButton = new javax.swing.JButton();
@@ -312,6 +314,10 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel17.setText("Height:");
 
+        jLabel21.setText("mm");
+
+        jLabel22.setText("mm");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -351,11 +357,18 @@ public class GUI extends javax.swing.JFrame {
                                                 .addGap(176, 176, 176)
                                                 .addComponent(jLabel16)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jLabelWidth)
-                                                .addGap(25, 25, 25)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabelWidth)
+                                                        .addGap(75, 75, 75))
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel21)
+                                                        .addGap(18, 18, 18)))
                                                 .addComponent(jLabel17)
+                                                .addGap(34, 34, 34)
+                                                .addComponent(jLabelHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jLabelHeight)))))
+                                                .addComponent(jLabel22)))))
                                 .addContainerGap(68, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -426,11 +439,15 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addComponent(jSliderScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelWidth)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabelHeight))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabelHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel17)
+                                .addComponent(jLabel21))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelWidth)
+                                .addComponent(jLabel16)))))
                 .addGap(216, 216, 216))
         );
 
@@ -816,6 +833,20 @@ private void jButtonLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//
 		jLabelImage.setIcon(new ImageIcon(thumbnail));
 		jLabelHeight.setText(Integer.toString(bufferedImage.getHeight()));
 		jLabelWidth.setText(Integer.toString(bufferedImage.getWidth()));
+		
+		double width = this.bufferedImage.getWidth();
+		double height = this.bufferedImage.getHeight();	
+
+		if (width > height) {
+			double scaleImage = height / width;
+			this.jLabelWidth.setText(Integer.toString(jSliderScale.getValue()));
+			this.jLabelHeight.setText(Integer.toString((int)Math.round(scaleImage * (double)jSliderScale.getValue())));
+		}
+		else {
+			double scaleImage = width / height;
+			this.jLabelHeight.setText(Integer.toString(jSliderScale.getValue()));
+			this.jLabelWidth.setText(Integer.toString((int)Math.round(scaleImage * (double)jSliderScale.getValue())));		
+		}
 	} catch (IOException ex) {
 		JOptionPane.showMessageDialog( null, ex.toString() );
 		appendText(ex.toString(), Color.red);
@@ -895,7 +926,6 @@ private void jButtonSendGcodeActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_jButtonSendGcodeActionPerformed
 
 private void jSliderScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderScaleStateChanged
-	appendText(Integer.toString(jSliderScale.getValue()), Color.red);
 	double width = this.bufferedImage.getWidth();
 	double height = this.bufferedImage.getHeight();	
 	
@@ -1020,6 +1050,8 @@ private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

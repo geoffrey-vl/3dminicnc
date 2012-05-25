@@ -38,7 +38,7 @@ public class BL_Algorithm {
         this.depthScale = depthScale;
         
         makeMillingPathXMode();
-        //printArray(millingPathArr);
+        printArray(millingPathArr);
         convertPathToGCode();
     }
 
@@ -123,12 +123,34 @@ public class BL_Algorithm {
         return xEnd;
     }
 	
-    private int goToNextRow(int x, int y, int[] borders) {
-        int overlappingVar = layers;//eventueel aan te passen via overlapvar
-        while((millingPathArr[x][y - overlappingVar]==0 || millingPathArr[x][y - overlappingVar + 1]==0)  && !(y > borders[2])) {
+ private int goToNextRow(int x, int y, int[] borders) {
+        //int overlappingVar = (int)Math.floor(diameter/2);//eventueel aan te passen via overlapvar
+        System.out.println("down" + x + ":"+ y);
+//        if(Math.floor(diameter) == 1) {
+//            int z = highestLayerImg[x][y];
+//            System.out.println(y);
+//            millingPath.add(new Pixel(x, y, z));
+//            int o = y - overlappingVar;
+//            millingPathArr[x][y] = 2; //used for going to next row
+//            y++;
+//            return y;
+//        }
+//
+//        while((millingPathArr[x][y - overlappingVar]==0 || millingPathArr[x][y - overlappingVar + 1]==0)  && !(y > borders[2])) {
+//            int z = highestLayerImg[x][y];
+//            System.out.println(y);
+//            millingPath.add(new Pixel(x, y, z));
+//            int o = y - overlappingVar;
+//            millingPathArr[x][y] = 2; //used for going to next row
+//            y++;
+//        }
+        for(int i = 0; i < (diameter/2) ; i++) {
             int z = highestLayerImg[x][y];
+            //System.out.println(y);
+            if(y > borders[2]) {
+                break;
+            }
             millingPath.add(new BL_Pixel(x, y, z));
-            int o = y - overlappingVar;
             millingPathArr[x][y] = 2; //used for going to next row
             y++;
         }
@@ -194,6 +216,7 @@ public class BL_Algorithm {
         String command = "G01 X" + xDouble * scale + "Y" + yDouble * scale;
         this.gCode.add(command);  //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
+		//System.out.println( xDouble + "Y" + yDouble );
 	//this.io.sendCommand(command);
     }
     
