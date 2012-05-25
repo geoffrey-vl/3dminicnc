@@ -833,9 +833,9 @@ private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GE
 		int depth = Integer.parseInt(this.jTextPaneDepth.getText());
 		int width = Integer.parseInt(jLabelWidth.getText());
 		this.gcode = bl.createImage(this.bufferedImage, diameter, layers, depth, width);
-		BufferedImage img = bl.getImage();
-		BufferedImage thumbnail = Scalr.resize(img, 150);
-		jLabelConvertedImage.setIcon(new ImageIcon(thumbnail));
+		//BufferedImage img = bl.getImage();
+		//BufferedImage thumbnail = Scalr.resize(img, 150);
+		//jLabelConvertedImage.setIcon(new ImageIcon(thumbnail));
 	}
 }//GEN-LAST:event_jButtonConvertActionPerformed
 

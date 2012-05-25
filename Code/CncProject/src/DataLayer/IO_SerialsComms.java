@@ -138,9 +138,8 @@ public class IO_SerialsComms {
      * uses this.sendCommand() method
      */
     public void sendData(ArrayList<String> message) {
- 
-        for(; txTrySendLineNumber<message.size(); txTrySendLineNumber++) { //loop over all lines
-            
+		// loop over all lines
+		while (txTrySendLineNumber<message.size()) {
             consoleWriteLine("Try sending " + txTrySendLineNumber + "/" + message.size(), INFO);
             
             while(true){
@@ -169,7 +168,6 @@ public class IO_SerialsComms {
      * Sends single string command over serial bus
      */
     public void sendCommand(String message) {
-
             //build protocol string
             String cmd = message;
             if(cmd.contains("G00") || cmd.contains("G01")) cmd+=feedrate;    //set feedrate to 100
@@ -192,7 +190,7 @@ public class IO_SerialsComms {
 			}
 				
             txLineNumber++;
-
+			txTrySendLineNumber++;
 
             try {
                Thread.sleep(256);  // Be sure data is xferred before closing
