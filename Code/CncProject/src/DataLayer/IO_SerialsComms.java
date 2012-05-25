@@ -286,7 +286,7 @@ public class IO_SerialsComms {
 
 
         //start thread which listens for receiving (RX) data
-        t = new Thread(new ReadThread(serialInStream));
+        t = new Thread(new IO_ReadThread(serialInStream));
         t.start();
 
 

@@ -17,8 +17,8 @@ import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.imgscalr.Scalr;
-import LogicLayer.BL_Keyboard;
-import LogicLayer.ImageHandler;
+import LogicLayer.BL_Communication;
+import LogicLayer.BL_ImageHandler;
 import java.awt.AWTEventMulticaster;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,9 +56,9 @@ import static org.imgscalr.Scalr.*;
  */
 public class GUI extends javax.swing.JFrame {
 	// Business Layer object
-	private BL_Keyboard bl;
+	private BL_Communication bl;
 	// Business Layer image handler
-	private ImageHandler ih;
+	private BL_ImageHandler ih;
 	// Distance to move the machine head
 	private double distance;
 	// The image that is loaded
@@ -118,7 +118,7 @@ public class GUI extends javax.swing.JFrame {
             catch (Exception evt) {}
 
             //init datalayer
-            bl = new BL_Keyboard();
+            bl = new BL_Communication();
 
 
             //get all available ports from business layer and add them to dropdown box
@@ -990,25 +990,6 @@ private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 				new GUI().setVisible(true);
 			}
 		});
-	}
-	
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		switch(keyCode) { 
-			case KeyEvent.VK_UP:
-					bl.setCommand("UP", this.distance);
-				break;
-			case KeyEvent.VK_DOWN:
-					bl.setCommand("DOWN", this.distance);
-				break;
-			case KeyEvent.VK_LEFT:
-					bl.setCommand("LEFT", this.distance);
-				break;
-			case KeyEvent.VK_RIGHT :
-					bl.setCommand("RIGHT", this.distance);	
-				break;
-		}	
-		
 	}
 	
     // Variables declaration - do not modify//GEN-BEGIN:variables
