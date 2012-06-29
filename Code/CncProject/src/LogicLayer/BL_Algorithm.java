@@ -38,7 +38,7 @@ public class BL_Algorithm {
         this.depthScale = depthScale;
         
         makeMillingPathXMode();
-        printArray(millingPathArr);
+        //printArray(millingPathArr);
         convertPathToGCode();
     }
 
@@ -221,7 +221,7 @@ public class BL_Algorithm {
     }
     
     private void makeGCodeZ(int z){
-        String command = "G01 Z" + (z - layers) * depthScale;
+        String command = "G01 Z" + (z - layers - 1) * depthScale;
         this.gCode.add(command); //FEEDRATE BIJZETTEN : F100
         System.out.println(command);
         //this.io.sendCommand(command);

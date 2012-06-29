@@ -50,6 +50,7 @@ public class BL_ImageHandler {
         this.depth = depth;
         this.diameter = diameter;
         this.layers = layers;
+        System.out.println(this.layers);
     }
     
     public ArrayList<String> convert() {
