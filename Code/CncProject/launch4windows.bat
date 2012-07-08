@@ -1,2 +1,1 @@
-cd dist
-java -jar "CncProject.jar"
+java -jar "dist/CncProject.jar"

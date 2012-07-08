@@ -53,14 +53,4 @@ public class BL_StopWatch {
     }
 
     
-    
-    
-//    //sample usage
-//    public static void main(String[] args) {
-//        BL_StopWatch s = new BL_StopWatch();
-//        s.start();
-//        //code you want to time goes here
-//        s.stop();
-//        System.out.println("elapsed time in milliseconds: " + s.getElapsedTime());
-//    }
 }
